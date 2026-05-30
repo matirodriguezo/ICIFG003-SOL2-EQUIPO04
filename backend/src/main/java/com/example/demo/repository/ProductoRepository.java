@@ -10,4 +10,6 @@ import com.example.demo.entity.ProductoEntity;
 @Repository
 public interface ProductoRepository extends CrudRepository<ProductoEntity, Long>{
 	List<ProductoEntity> findByCategoria(int categoria);
+
+	List<ProductoEntity> findByCarritoId(int carritoId);
 }
