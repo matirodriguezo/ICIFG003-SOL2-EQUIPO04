@@ -34,7 +34,7 @@ public class DetalleCarritoEntity {
 	
 	@OneToOne
 	@JoinColumn(name = "id_producto", nullable = false)
-	private ProductoEntity id_producto;
+	private ProductoEntity producto;
 	
 	@NonNull
 	@JoinColumn(nullable = false)
