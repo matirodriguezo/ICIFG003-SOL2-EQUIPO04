@@ -1,0 +1,11 @@
+<div
+  class="message-banner"
+  [class.message-success]="type === 'success'"
+  [class.message-error]="type === 'error'"
+  [class.message-info]="type === 'info'"
+  [attr.role]="role"
+  [attr.aria-live]="ariaLive"
+>
+  <span class="message-icon" aria-hidden="true">{{ icon }}</span>
+  <p>{{ message }}</p>
+</div>

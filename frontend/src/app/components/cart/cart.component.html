@@ -1,0 +1,44 @@
+<section class="cart-sidebar">
+  <div class="sidebar-title">
+    <span aria-hidden="true">🛒</span>
+    <h2>Carrito ({{ itemCount }})</h2>
+  </div>
+
+  <app-message-banner
+    *ngIf="items.length === 0"
+    type="info"
+    message="Tu carrito esta vacio"
+  ></app-message-banner>
+
+  <div *ngIf="items.length > 0" class="cart-content">
+    <ul class="cart-list">
+      <li *ngFor="let item of items">
+        <div>
+          <p class="cart-item-name">{{ item.name }}</p>
+          <p *ngIf="item.quantity > 1" class="cart-item-meta">
+            Cantidad: {{ item.quantity }}
+          </p>
+          <p class="cart-item-price">
+            ${{ (item.price * item.quantity).toLocaleString('es-CL') }}
+          </p>
+        </div>
+        <button
+          class="icon-button"
+          type="button"
+          (click)="remove.emit(item.id)"
+          [attr.aria-label]="'Eliminar ' + item.name + ' del carrito'"
+        >
+          ✕
+        </button>
+      </li>
+    </ul>
+
+    <div class="cart-summary">
+      <div class="cart-total">
+        <span>Total</span>
+        <span>${{ total.toLocaleString('es-CL') }}</span>
+      </div>
+      <button class="btn btn-success" type="button">Finalizar Compra</button>
+    </div>
+  </div>
+</section>

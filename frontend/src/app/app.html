@@ -1,5 +1,190 @@
-<app-menu></app-menu>
+<div class="app-container">
+  <header id="inicio" class="site-header">
+    <div class="container header-content">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">🐾</div>
+        <div>
+          <h1>PetShop Online</h1>
+          <p class="brand-tagline">Tu tienda de confianza para mascotas</p>
+        </div>
+      </div>
+      <p class="brand-subtitle">Todo para el bienestar de tu mejor amigo</p>
+    </div>
+  </header>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <app-menu [links]="navLinks"></app-menu>
+
+  <main class="container main-content">
+    <div class="main-grid">
+      <section class="content-area">
+        <section class="hero-section">
+          <h2>Bienvenido a PetShop Online</h2>
+          <p class="hero-text">
+            Los mejores productos para tu mascota al mejor precio
+          </p>
+          <ul class="hero-list">
+            <li>Envio gratis en compras sobre $30.000</li>
+            <li>Productos de primera calidad</li>
+            <li>Atencion personalizada</li>
+          </ul>
+        </section>
+
+        <section id="productos" class="products-section">
+          <div class="section-header">
+            <div>
+              <h2>Nuestros Productos</h2>
+              <p class="section-subtitle">Encuentra lo mejor para tu mascota</p>
+            </div>
+
+            <div class="filter-controls">
+              <label for="category-filter">Filtrar por categoria</label>
+              <select
+                id="category-filter"
+                [(ngModel)]="selectedCategory"
+                aria-label="Filtrar productos por categoria"
+              >
+                <option *ngFor="let category of categories" [value]="category">
+                  {{ category }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="products-grid">
+            <app-product-card
+              *ngFor="let product of filteredProducts"
+              [product]="product"
+              (add)="addToCart($event)"
+            ></app-product-card>
+          </div>
+
+          <app-message-banner
+            *ngIf="filteredProducts.length === 0"
+            type="info"
+            message="No hay productos en esta categoria"
+          ></app-message-banner>
+        </section>
+
+        <section id="contacto" class="contact-section">
+          <h2>Contacto</h2>
+
+          <app-message-banner
+            *ngIf="success"
+            type="success"
+            message="Mensaje enviado con exito. Nos pondremos en contacto pronto."
+            ariaLive="polite"
+          ></app-message-banner>
+
+          <form (ngSubmit)="handleSubmit()" novalidate>
+            <div class="form-field">
+              <label for="name">Nombre</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                [(ngModel)]="formData.name"
+                (ngModelChange)="clearError('name')"
+                [class.input-error]="errors.name"
+                aria-required="true"
+                [attr.aria-invalid]="errors.name ? 'true' : 'false'"
+                [attr.aria-describedby]="errors.name ? 'name-error' : null"
+              />
+              <p *ngIf="errors.name" id="name-error" class="error-text" role="alert">
+                {{ errors.name }}
+              </p>
+            </div>
+
+            <div class="form-field">
+              <label for="email">Correo Electronico</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                [(ngModel)]="formData.email"
+                (ngModelChange)="clearError('email')"
+                [class.input-error]="errors.email"
+                aria-required="true"
+                [attr.aria-invalid]="errors.email ? 'true' : 'false'"
+                [attr.aria-describedby]="errors.email ? 'email-error' : null"
+              />
+              <p *ngIf="errors.email" id="email-error" class="error-text" role="alert">
+                {{ errors.email }}
+              </p>
+            </div>
+
+            <div class="form-field">
+              <label for="message">Mensaje</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                [(ngModel)]="formData.message"
+                (ngModelChange)="clearError('message')"
+                [class.input-error]="errors.message"
+                aria-required="true"
+                [attr.aria-invalid]="errors.message ? 'true' : 'false'"
+                [attr.aria-describedby]="errors.message ? 'message-error' : null"
+              ></textarea>
+              <p *ngIf="errors.message" id="message-error" class="error-text" role="alert">
+                {{ errors.message }}
+              </p>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Enviar Mensaje</button>
+          </form>
+        </section>
+      </section>
+
+      <aside class="sidebar-area">
+        <section id="promociones" class="promotions-sidebar">
+          <div class="sidebar-title">
+            <span aria-hidden="true">🏷️</span>
+            <h2>Promociones</h2>
+          </div>
+          <ul class="promo-list">
+            <li *ngFor="let promo of promotions">
+              <p class="promo-title">{{ promo.title }}</p>
+              <p class="promo-text">{{ promo.text }}</p>
+            </li>
+          </ul>
+        </section>
+        <app-cart
+          [items]="cartItems"
+          [itemCount]="itemCount"
+          [total]="cartTotal"
+          (remove)="removeFromCart($event)"
+        ></app-cart>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>PetShop Online</h3>
+        <p>
+          Tu tienda de confianza para el cuidado de tus mascotas desde 2020.
+        </p>
+      </div>
+      <div>
+        <h3>Contacto</h3>
+        <ul>
+          <li>+56 9 1234 5678</li>
+          <li>contacto@petshop.cl</li>
+          <li>Av. Principal 123, Santiago</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Horario</h3>
+        <ul>
+          <li>Lunes a Viernes: 9:00 - 19:00</li>
+          <li>Sabados: 10:00 - 14:00</li>
+          <li>Domingos: Cerrado</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 PetShop Online. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</div>

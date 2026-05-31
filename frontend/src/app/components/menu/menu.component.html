@@ -1,0 +1,7 @@
+<nav class="nav-menu" aria-label="Navegacion principal">
+  <div class="container nav-list">
+    <a *ngFor="let link of links" class="nav-link" [href]="link.href">
+      {{ link.label }}
+    </a>
+  </div>
+</nav>
