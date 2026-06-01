@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,5 +39,5 @@ public class CarritoEntity {
 	private Long total_carrito;
 	
 	@OneToMany(mappedBy = "carrito")
-    private DetalleCarritoEntity detalle;
+    private List<DetalleCarritoEntity> detalle;
 }

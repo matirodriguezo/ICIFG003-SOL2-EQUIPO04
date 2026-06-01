@@ -14,5 +14,5 @@ public interface ICategoriaProductoService {
 
 	void deleteById(long id);
 
-	List<ProductoEntity> findProductoByCategoriaId(int categoriaId);
+	List<ProductoEntity> findProductoByCategoriaId(Long categoriaId);
 }

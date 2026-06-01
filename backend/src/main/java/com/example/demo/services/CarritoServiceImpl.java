@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.CarritoEntity;
 import com.example.demo.entity.DetalleCarritoEntity;
-import com.example.demo.entity.ProductoEntity;
 import com.example.demo.interfaces.ICarritoService;
 import com.example.demo.repository.CarritoRepository;
 import com.example.demo.repository.DetalleCarritoRepository;
-import com.example.demo.repository.ProductoRepository;
 
+@Service
 public class CarritoServiceImpl implements ICarritoService {
 
     @Autowired
@@ -20,9 +20,6 @@ public class CarritoServiceImpl implements ICarritoService {
 
     @Autowired
     private DetalleCarritoRepository DetalleRepo;
-
-    @Autowired
-    private ProductoRepository ProductoRepo;
 
     @Override
     public List<CarritoEntity> findAll() {
@@ -47,13 +44,8 @@ public class CarritoServiceImpl implements ICarritoService {
     }
 
     @Override
-    public List<DetalleCarritoEntity> findDetalleByCarritoId(int carritoId) {
+    public List<DetalleCarritoEntity> findDetalleByCarritoId(Long carritoId) {
         return DetalleRepo.findByCarritoId(carritoId);
-    }
-
-    @Override
-    public List<ProductoEntity> findProductoByCarritoId(int carritoId) {
-        return ProductoRepo.findByCarritoId(carritoId);
     }
     
 }

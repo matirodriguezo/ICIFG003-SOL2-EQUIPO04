@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.demo.entity.CarritoEntity;
 import com.example.demo.entity.DetalleCarritoEntity;
-import com.example.demo.entity.ProductoEntity;
 
 public interface ICarritoService {
     List<CarritoEntity> findAll();
@@ -15,7 +14,5 @@ public interface ICarritoService {
 
 	void deleteById(long id);
 
-    List<DetalleCarritoEntity> findDetalleByCarritoId(int carritoId);
-
-    List<ProductoEntity> findProductoByCarritoId(int carritoId);
+    List<DetalleCarritoEntity> findDetalleByCarritoId(Long carritoId);
 }
