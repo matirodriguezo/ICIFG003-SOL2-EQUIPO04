@@ -1,7 +1,10 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Category, CartItem, Product, PRODUCTS } from './models/product';
+import { CartItem } from './models/product';
+import { Producto, CategoriaProducto } from './models/backend.models';
+import { ProductoService } from './services/producto.service';
+import { CategoriaService } from './services/categoria.service';
 import { MenuComponent, MenuLink } from './components/menu/menu.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CartComponent } from './components/cart/cart.component';
@@ -28,38 +31,77 @@ interface FormErrors {
   styleUrl: './app.css',
   encapsulation: ViewEncapsulation.None
 })
-export class App {
-  readonly products = PRODUCTS;
-  readonly categories: Array<Category | 'Todos'> = ['Todos', 'Perros', 'Gatos', 'Accesorios'];
+export class App implements OnInit {
+  productos: Producto[] = [];
+  categorias: CategoriaProducto[] = [];
+  loading = true;
+  error = '';
+
+  selectedCategoria = 'Todos';
+  cartItems: CartItem[] = [];
+  showCart = false;
+
   readonly navLinks: MenuLink[] = [
     { label: 'Inicio', href: '#inicio' },
     { label: 'Productos', href: '#productos' },
-    { label: 'Promociones', href: '#promociones' },
+    { label: 'Ofertas', href: '#promociones' },
     { label: 'Contacto', href: '#contacto' }
   ];
-  readonly promotions = [
-    { title: '20% OFF', text: 'En alimentos premium' },
-    { title: 'Envio Gratis', text: 'Compras sobre $30.000' },
-    { title: 'Regalo', text: 'Juguete en tu primera compra' }
-  ];
 
-  selectedCategory: Category | 'Todos' = 'Todos';
-  cartItems: CartItem[] = [];
-
-  formData = {
-    name: '',
-    email: '',
-    message: ''
-  };
-
+  formData = { name: '', email: '', message: '' };
   errors: FormErrors = {};
   success = false;
 
-  get filteredProducts(): Product[] {
-    if (this.selectedCategory === 'Todos') {
-      return this.products;
+  constructor(
+    private productoService: ProductoService,
+    private categoriaService: CategoriaService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  private loadData(): void {
+    this.loading = true;
+    this.error = '';
+    this.productoService.findAll().subscribe({
+      next: (data) => {
+        this.productos = data;
+        this.loading = false;
+        this.cdr.detectChanges();
+        this.loadCategories();
+      },
+      error: () => {
+        this.error = 'No se pudieron cargar los productos. Verifica que el backend esté corriendo en el puerto 8080.';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private loadCategories(): void {
+    this.categoriaService.findAll().subscribe({
+      next: (data) => {
+        this.categorias = data;
+        this.cdr.detectChanges();
+      },
+      error: () => {}
+    });
+  }
+
+  get allCategories(): string[] {
+    const names = this.categorias.map((c) => c.nombre_categoria);
+    return ['Todos', ...names];
+  }
+
+  get filteredProducts(): Producto[] {
+    if (this.selectedCategoria === 'Todos') {
+      return this.productos;
     }
-    return this.products.filter((product) => product.category === this.selectedCategory);
+    return this.productos.filter(
+      (p) => p.categoria?.nombre_categoria === this.selectedCategoria
+    );
   }
 
   get itemCount(): number {
@@ -67,32 +109,50 @@ export class App {
   }
 
   get cartTotal(): number {
-    return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return this.cartItems.reduce(
+      (sum, item) => sum + item.precio * item.quantity,
+      0
+    );
   }
 
-  addToCart(product: Product): void {
-    const existing = this.cartItems.find((item) => item.id === product.id);
+  addToCart(producto: Producto): void {
+    const existing = this.cartItems.find((item) => item.id === producto.id);
     if (existing) {
       this.cartItems = this.cartItems.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === producto.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       );
       return;
     }
-    this.cartItems = [...this.cartItems, { ...product, quantity: 1 }];
+    this.cartItems = [
+      ...this.cartItems,
+      {
+        id: producto.id,
+        nombre: producto.nombre,
+        descripcion: producto.descripcion,
+        precio: producto.precio,
+        stock: producto.stock,
+        imagen: producto.imagen,
+        categoria_nombre: producto.categoria?.nombre_categoria ?? '',
+        quantity: 1
+      }
+    ];
   }
 
   removeFromCart(productId: number): void {
     this.cartItems = this.cartItems.filter((item) => item.id !== productId);
   }
 
-  handleSubmit(): void {
-    if (!this.validateForm()) {
-      return;
-    }
+  toggleCart(): void {
+    this.showCart = !this.showCart;
+  }
 
+  handleSubmit(): void {
+    if (!this.validateForm()) return;
     this.success = true;
     this.formData = { name: '', email: '', message: '' };
-    window.setTimeout(() => {
+    setTimeout(() => {
       this.success = false;
     }, 5000);
   }
@@ -105,23 +165,19 @@ export class App {
 
   private validateForm(): boolean {
     const newErrors: FormErrors = {};
-
     if (!this.formData.name.trim()) {
       newErrors.name = 'El nombre es obligatorio';
     }
-
     if (!this.formData.email.trim()) {
-      newErrors.email = 'El correo electronico es obligatorio';
+      newErrors.email = 'El correo es obligatorio';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.formData.email)) {
-      newErrors.email = 'Por favor ingresa un correo electronico valido';
+      newErrors.email = 'Ingresa un correo válido';
     }
-
     if (!this.formData.message.trim()) {
       newErrors.message = 'El mensaje es obligatorio';
-    } else if (this.formData.message.trim().length < 20) {
-      newErrors.message = 'El mensaje debe tener al menos 20 caracteres';
+    } else if (this.formData.message.trim().length < 10) {
+      newErrors.message = 'El mensaje debe tener al menos 10 caracteres';
     }
-
     this.errors = newErrors;
     return Object.keys(newErrors).length === 0;
   }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../models/product';
+import { Producto } from '../../models/backend.models';
 
 @Component({
   selector: 'app-product-card',
@@ -10,6 +10,6 @@ import { Product } from '../../models/product';
   styleUrl: './product-card.component.css'
 })
 export class ProductCardComponent {
-  @Input({ required: true }) product!: Product;
-  @Output() add = new EventEmitter<Product>();
+  @Input({ required: true }) producto!: Producto;
+  @Output() add = new EventEmitter<Producto>();
 }

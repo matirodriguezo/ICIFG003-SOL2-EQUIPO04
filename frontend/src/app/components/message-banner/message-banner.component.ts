@@ -18,14 +18,4 @@ export class MessageBannerComponent {
   get role(): 'status' | 'alert' {
     return this.type === 'error' ? 'alert' : 'status';
   }
-
-  get icon(): string {
-    if (this.type === 'success') {
-      return '✓';
-    }
-    if (this.type === 'error') {
-      return '!';
-    }
-    return 'i';
-  }
 }

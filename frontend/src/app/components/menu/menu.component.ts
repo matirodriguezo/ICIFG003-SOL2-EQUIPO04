@@ -15,4 +15,13 @@ export interface MenuLink {
 })
 export class MenuComponent {
   @Input({ required: true }) links: MenuLink[] = [];
+  isMenuOpen = false;
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen = false;
+  }
 }

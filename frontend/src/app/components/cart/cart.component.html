@@ -1,44 +1,42 @@
-<section class="cart-sidebar">
-  <div class="sidebar-title">
-    <span aria-hidden="true">🛒</span>
-    <h2>Carrito ({{ itemCount }})</h2>
-  </div>
-
+<div class="cart-content">
   <app-message-banner
     *ngIf="items.length === 0"
     type="info"
-    message="Tu carrito esta vacio"
+    message="Tu carrito está vacío"
   ></app-message-banner>
 
-  <div *ngIf="items.length > 0" class="cart-content">
+  <div *ngIf="items.length > 0">
     <ul class="cart-list">
-      <li *ngFor="let item of items">
-        <div>
-          <p class="cart-item-name">{{ item.name }}</p>
-          <p *ngIf="item.quantity > 1" class="cart-item-meta">
+      <li *ngFor="let item of items" class="cart-item">
+        <div class="cart-item-info">
+          <h4 class="cart-item-name">{{ item.nombre }}</h4>
+          <p class="cart-item-meta" *ngIf="item.quantity > 1">
             Cantidad: {{ item.quantity }}
           </p>
-          <p class="cart-item-price">
-            ${{ (item.price * item.quantity).toLocaleString('es-CL') }}
-          </p>
         </div>
-        <button
-          class="icon-button"
-          type="button"
-          (click)="remove.emit(item.id)"
-          [attr.aria-label]="'Eliminar ' + item.name + ' del carrito'"
-        >
-          ✕
-        </button>
+        <div class="cart-item-right">
+          <span class="cart-item-price">${{ (item.precio * item.quantity).toLocaleString('es-CL') }}</span>
+          <button
+            class="btn-remove"
+            type="button"
+            (click)="remove.emit(item.id)"
+            [attr.aria-label]="'Eliminar ' + item.nombre + ' del carrito'"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
+        </div>
       </li>
     </ul>
 
     <div class="cart-summary">
       <div class="cart-total">
         <span>Total</span>
-        <span>${{ total.toLocaleString('es-CL') }}</span>
+        <strong>${{ total.toLocaleString('es-CL') }}</strong>
       </div>
-      <button class="btn btn-success" type="button">Finalizar Compra</button>
+      <button class="btn btn-success btn-block" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Finalizar Compra
+      </button>
     </div>
   </div>
-</section>
+</div>
