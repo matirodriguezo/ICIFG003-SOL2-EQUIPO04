@@ -1,5 +1,3 @@
--- Insertar categorías (se ejecutan primero por la llave foránea)
--- NOTA: Si en tu base de datos la tabla se creó en singular, cambia 'categorias_productos' por 'categoria'
 INSERT INTO categorias_productos (nombre_categoria, descripcion) 
 VALUES ('Perros', 'Productos y accesorios para perros')
 ON CONFLICT DO NOTHING;
@@ -12,9 +10,6 @@ INSERT INTO categorias_productos (nombre_categoria, descripcion)
 VALUES ('Accesorios', 'Accesorios generales para mascotas')
 ON CONFLICT DO NOTHING;
 
-
--- Insertar productos
--- NOTA: Si en tu base de datos la tabla se creó en singular, cambia 'productos' por 'producto'
 INSERT INTO productos (nombre, descripcion, precio, stock, imagen, id_categoria) 
 VALUES ('Alimento Premium', 'Alimento balanceado de alta calidad para perros adultos.', 18990, 50, 'https://images.unsplash.com/photo-1615394968637-de55ca4b2e64?w=400&q=80', 1)
 ON CONFLICT DO NOTHING;
