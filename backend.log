@@ -320,3 +320,67 @@ Caused by: java.net.ConnectException: Connection refused: no further information
 2026-06-02 09:31:22.540  INFO 31340 --- [main] com.example.demo.BackendApplication      : Started BackendApplication in 2.682 seconds (JVM running for 2.918)
 2026-06-02 09:31:30.639  INFO 31340 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-06-02 09:31:30.640  INFO 31340 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-02 09:31:30.641  INFO 31340 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-06-02 09:42:51.226  INFO 7124 --- [main] com.example.demo.BackendApplication      : Starting BackendApplication using Java 20.0.1 on USS-CO-F309-011 with PID 7124 (C:\Users\USS\ICIFG003-SOL2-EQUIPO04\backend\target\classes started by USS in C:\Users\USS\ICIFG003-SOL2-EQUIPO04)
+2026-06-02 09:42:51.228  INFO 7124 --- [main] com.example.demo.BackendApplication      : No active profile set, falling back to default profiles: default
+2026-06-02 09:42:51.577  INFO 7124 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-02 09:42:51.640  INFO 7124 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 5 JPA repository interfaces.
+2026-06-02 09:42:52.003  INFO 7124 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2026-06-02 09:42:52.009  INFO 7124 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-02 09:42:52.009  INFO 7124 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2026-06-02 09:42:52.138  INFO 7124 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-02 09:42:52.139  INFO 7124 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 877 ms
+2026-06-02 09:42:52.203  INFO 7124 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-02 09:42:52.338  INFO 7124 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-02 09:42:52.403  INFO 7124 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-02 09:42:52.429  INFO 7124 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.33
+2026-06-02 09:42:52.509  INFO 7124 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2026-06-02 09:42:52.567  INFO 7124 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2026-06-02 09:42:53.095  INFO 7124 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-06-02 09:42:53.100  INFO 7124 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-02 09:42:53.360  WARN 7124 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-02 09:42:53.606  INFO 7124 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-02 09:42:53.612  INFO 7124 --- [main] com.example.demo.BackendApplication      : Started BackendApplication in 2.624 seconds (JVM running for 2.857)
+2026-06-02 09:43:32.617  INFO 32796 --- [main] com.example.demo.BackendApplication      : Starting BackendApplication using Java 20.0.1 on USS-CO-F309-011 with PID 32796 (C:\Users\USS\ICIFG003-SOL2-EQUIPO04\backend\target\classes started by USS in C:\Users\USS\ICIFG003-SOL2-EQUIPO04)
+2026-06-02 09:43:32.618  INFO 32796 --- [main] com.example.demo.BackendApplication      : No active profile set, falling back to default profiles: default
+2026-06-02 09:43:32.990  INFO 32796 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-02 09:43:33.083  INFO 32796 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 87 ms. Found 5 JPA repository interfaces.
+2026-06-02 09:43:33.428  INFO 32796 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2026-06-02 09:43:33.434  INFO 32796 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-02 09:43:33.435  INFO 32796 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2026-06-02 09:43:33.497  INFO 32796 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-02 09:43:33.497  INFO 32796 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 843 ms
+2026-06-02 09:43:33.618  INFO 32796 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-02 09:43:33.643  INFO 32796 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.33
+2026-06-02 09:43:33.702  INFO 32796 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2026-06-02 09:43:33.747  INFO 32796 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-02 09:43:33.877  INFO 32796 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-02 09:43:33.886  INFO 32796 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2026-06-02 09:43:34.426  INFO 32796 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-06-02 09:43:34.431  INFO 32796 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-02 09:43:34.702  WARN 32796 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-02 09:43:34.948  INFO 32796 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-02 09:43:34.956  INFO 32796 --- [main] com.example.demo.BackendApplication      : Started BackendApplication in 2.583 seconds (JVM running for 2.838)
+2026-06-02 09:46:07.336  INFO 30428 --- [main] com.example.demo.BackendApplication      : Starting BackendApplication using Java 20.0.1 on USS-CO-F309-011 with PID 30428 (C:\Users\USS\ICIFG003-SOL2-EQUIPO04\backend\target\classes started by USS in C:\Users\USS\ICIFG003-SOL2-EQUIPO04)
+2026-06-02 09:46:07.337  INFO 30428 --- [main] com.example.demo.BackendApplication      : No active profile set, falling back to default profiles: default
+2026-06-02 09:46:07.698  INFO 30428 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-02 09:46:07.757  INFO 30428 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 5 JPA repository interfaces.
+2026-06-02 09:46:08.134  INFO 30428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2026-06-02 09:46:08.140  INFO 30428 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-02 09:46:08.140  INFO 30428 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2026-06-02 09:46:08.207  INFO 30428 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-02 09:46:08.207  INFO 30428 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 836 ms
+2026-06-02 09:46:08.338  INFO 30428 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-02 09:46:08.363  INFO 30428 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.33
+2026-06-02 09:46:08.426  INFO 30428 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2026-06-02 09:46:08.470  INFO 30428 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-02 09:46:08.615  INFO 30428 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-02 09:46:08.625  INFO 30428 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2026-06-02 09:46:09.128  INFO 30428 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-06-02 09:46:09.133  INFO 30428 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-02 09:46:09.416  WARN 30428 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-02 09:46:09.676  INFO 30428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-02 09:46:09.683  INFO 30428 --- [main] com.example.demo.BackendApplication      : Started BackendApplication in 2.585 seconds (JVM running for 2.815)
+2026-06-02 09:46:30.890  INFO 30428 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-02 09:46:30.891  INFO 30428 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-02 09:46:30.892  INFO 30428 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
