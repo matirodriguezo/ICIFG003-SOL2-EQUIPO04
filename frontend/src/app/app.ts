@@ -5,7 +5,6 @@ import { CartItem } from './models/product';
 import { Producto, CategoriaProducto } from './models/backend.models';
 import { ProductoService } from './services/producto.service';
 import { CategoriaService } from './services/categoria.service';
-import { MenuComponent, MenuLink } from './components/menu/menu.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CartComponent } from './components/cart/cart.component';
 import { MessageBannerComponent } from './components/message-banner/message-banner.component';
@@ -22,7 +21,6 @@ interface FormErrors {
   imports: [
     CommonModule,
     FormsModule,
-    MenuComponent,
     ProductCardComponent,
     CartComponent,
     MessageBannerComponent
@@ -40,8 +38,9 @@ export class App implements OnInit {
   selectedCategoria = 'Todos';
   cartItems: CartItem[] = [];
   showCart = false;
+  mobileMenuOpen = false;
 
-  readonly navLinks: MenuLink[] = [
+  readonly navLinks: { label: string; href: string }[] = [
     { label: 'Inicio', href: '#inicio' },
     { label: 'Productos', href: '#productos' },
     { label: 'Ofertas', href: '#promociones' },

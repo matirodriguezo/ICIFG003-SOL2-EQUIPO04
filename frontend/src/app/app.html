@@ -1,309 +1,365 @@
 <div class="app-container">
+
+  <!-- ===== HEADER ===== -->
   <header id="inicio" class="site-header">
     <div class="container">
       <div class="header-content">
-        <div class="brand">
+        <a href="#inicio" class="brand">
           <div class="brand-icon" aria-hidden="true">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <path d="M16 4C10 4 4 9 4 16C4 23 10 28 16 28C22 28 28 23 28 16C28 9 22 4 16 4Z" fill="currentColor" opacity="0.3"/>
+              <circle cx="12" cy="14" r="2" fill="currentColor"/>
+              <circle cx="20" cy="14" r="2" fill="currentColor"/>
+              <path d="M12 20C12 20 14 22 16 22C18 22 20 20 20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
           </div>
-          <div>
-            <h1 class="brand-name">PetShop</h1>
-            <span class="brand-tagline">Todo para tu mascota</span>
-          </div>
-        </div>
+          <span class="brand-name">PetShop</span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Navegación principal">
+          <a *ngFor="let link of navLinks" class="nav-link" [href]="link.href">{{ link.label }}</a>
+        </nav>
+
         <div class="header-actions">
-          <button class="cart-button" (click)="toggleCart()" aria-label="Abrir carrito">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <button class="cart-btn" (click)="toggleCart()" aria-label="Abrir carrito">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
             <span *ngIf="itemCount > 0" class="cart-badge">{{ itemCount }}</span>
+          </button>
+          <button class="menu-toggle" (click)="mobileMenuOpen = !mobileMenuOpen" aria-label="Abrir menú" [attr.aria-expanded]="mobileMenuOpen">
+            <span class="hamburger-line" [class.open]="mobileMenuOpen"></span>
+            <span class="hamburger-line" [class.open]="mobileMenuOpen"></span>
           </button>
         </div>
       </div>
     </div>
+
+    <div class="mobile-nav" [class.open]="mobileMenuOpen">
+      <a *ngFor="let link of navLinks" class="mobile-nav-link" [href]="link.href" (click)="mobileMenuOpen = false">{{ link.label }}</a>
+    </div>
   </header>
 
-  <app-menu [links]="navLinks"></app-menu>
-
-  <main>
-    <section class="hero-section">
-      <div class="container hero-grid">
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
         <div class="hero-content">
-          <span class="hero-badge">Bienvenido a PetShop</span>
-          <h2 class="hero-title">El mejor cuidado para tu <span class="text-accent">mejor amigo</span></h2>
-          <p class="hero-text">Descubre productos de primera calidad para perros, gatos y más. Todo lo que necesitas en un solo lugar.</p>
-          <div class="hero-cta">
+          <div class="hero-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Bienvenido a PetShop
+          </div>
+          <h1 class="hero-title">El mejor cuidado para tu <span class="text-accent highlight">mejor amigo</span></h1>
+          <p class="hero-desc">Descubre productos de primera calidad para perros, gatos y más. Todo lo que tu mascota necesita en un solo lugar.</p>
+          <div class="hero-actions">
             <a href="#productos" class="btn btn-primary btn-lg">Ver Productos</a>
             <a href="#contacto" class="btn btn-outline btn-lg">Contáctanos</a>
           </div>
           <div class="hero-stats">
-            <div class="stat">
-              <span class="stat-value">+500</span>
+            <div class="stat-item">
+              <span class="stat-number">+500</span>
               <span class="stat-label">Productos</span>
             </div>
-            <div class="stat">
-              <span class="stat-value">+2.000</span>
+            <div class="stat-item">
+              <span class="stat-number">+2K</span>
               <span class="stat-label">Clientes Felices</span>
             </div>
-            <div class="stat">
-              <span class="stat-value">+50</span>
+            <div class="stat-item">
+              <span class="stat-number">+50</span>
               <span class="stat-label">Marcas</span>
             </div>
           </div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="hero-shape"></div>
-          <div class="hero-shape shape-2"></div>
+        <div class="hero-visual">
+          <div class="hero-illustration">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+            <div class="hero-card">
+              <div class="hero-card-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <span>+2.000 <small>clientes felices</small></span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="hero-wave">
-        <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path d="M0,50 C360,100 1080,0 1440,50 L1440,100 L0,100 Z" fill="var(--bg-primary)"></path></svg>
-      </div>
-    </section>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--bg-primary)"/></svg>
+    </div>
+  </section>
 
-    <section id="productos" class="products-section">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <span class="section-tag">Productos</span>
-            <h2 class="section-title">Nuestros Productos</h2>
-            <p class="section-subtitle">Encuentra todo lo que necesitas para tu mascota</p>
+  <!-- ===== FEATURES ===== -->
+  <section class="features">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon feature-icon-delivery">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
           </div>
+          <h3>Envío Gratis</h3>
+          <p>En compras sobre $30.000 a todo Chile. Recibe en 24-48 hrs.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon-quality">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Calidad Garantizada</h3>
+          <p>Productos seleccionados con los más altos estándares.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon-support">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>Soporte 24/7</h3>
+          <p>Estamos aquí para ayudarte cuando nos necesites.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon-return">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          </div>
+          <h3>Devolución Fácil</h3>
+          <p>30 días para devolver tu compra sin complicaciones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRODUCTS ===== -->
+  <section id="productos" class="products-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Productos
+          </span>
+          <h2 class="section-title">Descubre nuestra tienda</h2>
+          <p class="section-subtitle">Explora nuestra variedad de productos pensados para el bienestar de tu mascota.</p>
+        </div>
+        <div class="filter-wrapper">
           <div class="filter-group">
-            <label for="category-filter" class="filter-label">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-              Filtrar por categoría
-            </label>
-            <select
-              id="category-filter"
-              class="filter-select"
-              [(ngModel)]="selectedCategoria"
-            >
-              <option *ngFor="let cat of allCategories" [value]="cat">
-                {{ cat }}
-              </option>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <select id="category-filter" [(ngModel)]="selectedCategoria">
+              <option *ngFor="let cat of allCategories" [value]="cat">{{ cat }}</option>
             </select>
           </div>
         </div>
+      </div>
 
-        <div *ngIf="loading" class="loading-state">
-          <div class="spinner"></div>
-          <p>Cargando productos...</p>
+      <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando productos...</p>
+      </div>
+
+      <div *ngIf="error && !loading" class="error-state">
+        <p>{{ error }}</p>
+      </div>
+
+      <div *ngIf="!loading && filteredProducts.length === 0" class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <h3>Sin resultados</h3>
+        <p>No encontramos productos en esta categoría.</p>
+      </div>
+
+      <div *ngIf="!loading && filteredProducts.length > 0" class="products-grid">
+        <app-product-card *ngFor="let product of filteredProducts" [producto]="product" (add)="addToCart($event)"></app-product-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROMOTIONS ===== -->
+  <section id="promociones" class="promotions-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Ofertas
+        </span>
+        <h2 class="section-title">Promociones Especiales</h2>
+        <p class="section-subtitle">Aprovecha estos beneficios exclusivos para ti y tu mascota.</p>
+      </div>
+      <div class="promo-grid">
+        <div class="promo-card">
+          <div class="promo-badge">-20%</div>
+          <div class="promo-icon promo-icon-orange">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
+          <h3 class="promo-title">20% OFF</h3>
+          <p class="promo-text">En alimentos premium para perros y gatos seleccionados.</p>
+          <span class="promo-code">PET20</span>
         </div>
-
-        <div *ngIf="error && !loading" class="error-state">
-          <p>{{ error }}</p>
+        <div class="promo-card promo-card-highlight">
+          <div class="promo-badge promo-badge-green">GRATIS</div>
+          <div class="promo-icon promo-icon-green">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <h3 class="promo-title">Envío Gratis</h3>
+          <p class="promo-text">En compras sobre $30.000 a todo Chile. Sin código necesario.</p>
+          <span class="promo-code promo-code-green">SIN CÓDIGO</span>
         </div>
-
-        <div *ngIf="!loading && filteredProducts.length === 0" class="empty-state">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <h3>Sin resultados</h3>
-          <p>No encontramos productos en esta categoría.</p>
-        </div>
-
-        <div *ngIf="!loading && filteredProducts.length > 0" class="products-grid">
-          <app-product-card
-            *ngFor="let product of filteredProducts"
-            [producto]="product"
-            (add)="addToCart($event)"
-          ></app-product-card>
+        <div class="promo-card">
+          <div class="promo-badge promo-badge-gold">REGALO</div>
+          <div class="promo-icon promo-icon-gold">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 class="promo-title">Regalo Sorpresa</h3>
+          <p class="promo-text">Recibe un juguete gratis en tu primera compra como nuevo cliente.</p>
+          <span class="promo-code promo-code-gold">NUEVO</span>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="promociones" class="promotions-section">
-      <div class="container">
-        <div class="section-header text-center">
-          <span class="section-tag">Ofertas</span>
-          <h2 class="section-title">Promociones Especiales</h2>
-          <p class="section-subtitle">Aprovecha estos beneficios exclusivos</p>
-        </div>
-        <div class="promo-grid">
-          <div class="promo-card promo-primary">
-            <div class="promo-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-            </div>
-            <h3 class="promo-title">20% OFF</h3>
-            <p class="promo-text">En alimentos premium para perros y gatos</p>
-            <span class="promo-code">CUPON: PET20</span>
-          </div>
-          <div class="promo-card promo-secondary">
-            <div class="promo-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-            </div>
-            <h3 class="promo-title">Envío Gratis</h3>
-            <p class="promo-text">En compras sobre $30.000 a todo Chile</p>
-            <span class="promo-code">SIN CÓDIGO</span>
-          </div>
-          <div class="promo-card promo-accent">
-            <div class="promo-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            </div>
-            <h3 class="promo-title">Regalo Sorpresa</h3>
-            <p class="promo-text">Recibe un juguete gratis en tu primera compra</p>
-            <span class="promo-code">NUEVO CLIENTE</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contacto" class="contact-section">
-      <div class="container">
-        <div class="contact-grid">
-          <div class="contact-info">
-            <span class="section-tag">Contacto</span>
-            <h2 class="section-title">¿Tienes dudas?</h2>
-            <p class="section-subtitle">Estamos aquí para ayudarte. Escríbenos y te responderemos a la brevedad.</p>
-            <div class="contact-details">
-              <div class="contact-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                <span>contacto&#64;petshop.cl</span>
+  <!-- ===== CONTACT ===== -->
+  <section id="contacto" class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <span class="section-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Contacto
+          </span>
+          <h2 class="section-title">¿Tienes dudas?</h2>
+          <p class="section-subtitle">Estamos aquí para ayudarte. Escríbenos y te responderemos a la brevedad.</p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <div class="contact-item-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               </div>
-              <div class="contact-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                <span>+56 9 1234 5678</span>
-              </div>
-              <div class="contact-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span>Av. Principal 123, Santiago</span>
+              <div>
+                <span class="contact-item-label">Email</span>
+                <span class="contact-item-value">contacto&#64;petshop.cl</span>
               </div>
             </div>
-            <div class="contact-hours">
+            <div class="contact-item">
+              <div class="contact-item-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <span class="contact-item-label">Teléfono</span>
+                <span class="contact-item-value">+56 9 1234 5678</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <span class="contact-item-label">Dirección</span>
+                <span class="contact-item-value">Av. Principal 123, Santiago</span>
+              </div>
+            </div>
+          </div>
+          <div class="contact-hours">
+            <div class="contact-hours-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
               <h4>Horario de Atención</h4>
               <p>Lun - Vie: 9:00 - 19:00</p>
               <p>Sáb: 10:00 - 14:00</p>
             </div>
           </div>
+        </div>
+        <div class="contact-form-wrap">
           <div class="contact-form-card">
             <h3>Envíanos un Mensaje</h3>
-            <app-message-banner
-              *ngIf="success"
-              type="success"
-              message="Mensaje enviado con éxito. Te contactaremos pronto."
-              ariaLive="polite"
-            ></app-message-banner>
+            <app-message-banner *ngIf="success" type="success" message="Mensaje enviado con éxito. Te contactaremos pronto." ariaLive="polite"></app-message-banner>
             <form (ngSubmit)="handleSubmit()" novalidate>
               <div class="form-field">
                 <label for="name">Nombre completo</label>
-                <input
-                  id="name"
-                  type="text"
-                  [(ngModel)]="formData.name"
-                  name="name"
-                  (ngModelChange)="clearError('name')"
-                  [class.input-error]="errors.name"
-                  placeholder="Tu nombre"
-                  [attr.aria-invalid]="errors.name ? 'true' : 'false'"
-                  [attr.aria-describedby]="errors.name ? 'name-error' : null"
-                />
+                <input id="name" type="text" [(ngModel)]="formData.name" name="name" (ngModelChange)="clearError('name')" [class.input-error]="errors.name" placeholder="Tu nombre" [attr.aria-invalid]="errors.name ? 'true' : 'false'" [attr.aria-describedby]="errors.name ? 'name-error' : null" />
                 <p *ngIf="errors.name" id="name-error" class="error-text">{{ errors.name }}</p>
               </div>
               <div class="form-field">
                 <label for="email">Correo Electrónico</label>
-                <input
-                  id="email"
-                  type="email"
-                  [(ngModel)]="formData.email"
-                  name="email"
-                  (ngModelChange)="clearError('email')"
-                  [class.input-error]="errors.email"
-                  placeholder="tu@correo.cl"
-                  [attr.aria-invalid]="errors.email ? 'true' : 'false'"
-                  [attr.aria-describedby]="errors.email ? 'email-error' : null"
-                />
+                <input id="email" type="email" [(ngModel)]="formData.email" name="email" (ngModelChange)="clearError('email')" [class.input-error]="errors.email" placeholder="tu@correo.cl" [attr.aria-invalid]="errors.email ? 'true' : 'false'" [attr.aria-describedby]="errors.email ? 'email-error' : null" />
                 <p *ngIf="errors.email" id="email-error" class="error-text">{{ errors.email }}</p>
               </div>
               <div class="form-field">
                 <label for="message">Mensaje</label>
-                <textarea
-                  id="message"
-                  rows="4"
-                  [(ngModel)]="formData.message"
-                  name="message"
-                  (ngModelChange)="clearError('message')"
-                  [class.input-error]="errors.message"
-                  placeholder="Escribe tu mensaje aquí..."
-                  [attr.aria-invalid]="errors.message ? 'true' : 'false'"
-                  [attr.aria-describedby]="errors.message ? 'message-error' : null"
-                ></textarea>
+                <textarea id="message" rows="4" [(ngModel)]="formData.message" name="message" (ngModelChange)="clearError('message')" [class.input-error]="errors.message" placeholder="Escribe tu mensaje aquí..." [attr.aria-invalid]="errors.message ? 'true' : 'false'" [attr.aria-describedby]="errors.message ? 'message-error' : null"></textarea>
                 <p *ngIf="errors.message" id="message-error" class="error-text">{{ errors.message }}</p>
               </div>
               <button class="btn btn-primary btn-block" type="submit">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 Enviar Mensaje
               </button>
             </form>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
+  <!-- ===== FOOTER ===== -->
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-grid">
+      <div class="footer-top">
         <div class="footer-brand">
           <div class="brand">
             <div class="brand-icon" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                <path d="M16 4C10 4 4 9 4 16C4 23 10 28 16 28C22 28 28 23 28 16C28 9 22 4 16 4Z" fill="currentColor" opacity="0.3"/>
+                <circle cx="12" cy="14" r="2" fill="currentColor"/>
+                <circle cx="20" cy="14" r="2" fill="currentColor"/>
+                <path d="M12 20C12 20 14 22 16 22C18 22 20 20 20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
             </div>
-            <h3>PetShop</h3>
+            <span class="brand-name">PetShop</span>
           </div>
           <p>Tu tienda de confianza para el cuidado de tus mascotas. Calidad y amor en cada producto.</p>
-          <div class="footer-social">
-            <a href="#" aria-label="Facebook">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-            <a href="#" aria-label="Instagram">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
-            </a>
-          </div>
         </div>
         <div class="footer-links">
-          <h4>Enlaces Rápidos</h4>
-          <ul>
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#productos">Productos</a></li>
-            <li><a href="#promociones">Promociones</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-          </ul>
+          <h4>Enlaces</h4>
+          <a href="#inicio">Inicio</a>
+          <a href="#productos">Productos</a>
+          <a href="#promociones">Promociones</a>
+          <a href="#contacto">Contacto</a>
         </div>
         <div class="footer-links">
           <h4>Contacto</h4>
-          <ul>
-            <li>+56 9 1234 5678</li>
-            <li>contacto&#64;petshop.cl</li>
-            <li>Av. Principal 123, Santiago</li>
-          </ul>
+          <span>+56 9 1234 5678</span>
+          <span>contacto&#64;petshop.cl</span>
+          <span>Av. Principal 123, Santiago</span>
         </div>
         <div class="footer-links">
           <h4>Horario</h4>
-          <ul>
-            <li>Lun - Vie: 9:00 - 19:00</li>
-            <li>Sáb: 10:00 - 14:00</li>
-            <li>Dom: Cerrado</li>
-          </ul>
+          <span>Lun - Vie: 9:00 - 19:00</span>
+          <span>Sáb: 10:00 - 14:00</span>
+          <span>Dom: Cerrado</span>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="container">
         <p>&copy; 2026 PetShop. Todos los derechos reservados.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- ===== CART ===== -->
   <div class="cart-overlay" *ngIf="showCart" (click)="toggleCart()"></div>
   <aside class="cart-panel" [class.open]="showCart">
     <div class="cart-header">
-      <h2>Carrito <span *ngIf="itemCount > 0">({{ itemCount }})</span></h2>
+      <h2>Tu Carrito <span *ngIf="itemCount > 0" class="cart-header-count">({{ itemCount }})</span></h2>
       <button class="cart-close" (click)="toggleCart()" aria-label="Cerrar carrito">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <app-cart
-      [items]="cartItems"
-      [itemCount]="itemCount"
-      [total]="cartTotal"
-      (remove)="removeFromCart($event)"
-    ></app-cart>
+    <app-cart [items]="cartItems" [itemCount]="itemCount" [total]="cartTotal" (remove)="removeFromCart($event)"></app-cart>
   </aside>
+
 </div>
