@@ -359,7 +359,112 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <app-cart [items]="cartItems" [itemCount]="itemCount" [total]="cartTotal" (remove)="removeFromCart($event)"></app-cart>
+    <app-cart [items]="cartItems" [itemCount]="itemCount" [total]="cartTotal" (remove)="removeFromCart($event)" (checkout)="openCheckout()"></app-cart>
   </aside>
+
+  <!-- ===== CHECKOUT MODAL ===== -->
+  <div class="modal-overlay" *ngIf="showCheckout && !receipt" (click)="closeCheckout()"></div>
+  <div class="modal-panel" *ngIf="showCheckout && !receipt" [class.open]="showCheckout">
+    <div class="modal-header">
+      <h2>Finalizar Compra</h2>
+      <button class="modal-close" (click)="closeCheckout()" aria-label="Cerrar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="checkout-summary">
+        <h3>Resumen del pedido</h3>
+        <div class="checkout-items">
+          <div *ngFor="let item of cartItems" class="checkout-item">
+            <div class="checkout-item-info">
+              <span class="checkout-item-name">{{ item.nombre }}</span>
+              <span class="checkout-item-qty">x{{ item.quantity }}</span>
+            </div>
+            <span class="checkout-item-price">${{ (item.precio * item.quantity).toLocaleString('es-CL') }}</span>
+          </div>
+        </div>
+        <div class="checkout-total">
+          <span>Total</span>
+          <strong>${{ cartTotal.toLocaleString('es-CL') }}</strong>
+        </div>
+      </div>
+
+      <div class="checkout-form">
+        <h3>Tus datos</h3>
+        <div class="form-field">
+          <label for="checkout-name">Nombre completo</label>
+          <input id="checkout-name" type="text" [(ngModel)]="checkoutForm.nombre" name="checkoutName" (ngModelChange)="clearCheckoutError('name')" [class.input-error]="checkoutErrors.name" placeholder="Tu nombre" />
+          <p *ngIf="checkoutErrors.name" class="error-text">{{ checkoutErrors.name }}</p>
+        </div>
+        <div class="form-field">
+          <label for="checkout-email">Correo Electrónico</label>
+          <input id="checkout-email" type="email" [(ngModel)]="checkoutForm.correo" name="checkoutEmail" (ngModelChange)="clearCheckoutError('email')" [class.input-error]="checkoutErrors.email" placeholder="tu@correo.cl" />
+          <p *ngIf="checkoutErrors.email" class="error-text">{{ checkoutErrors.email }}</p>
+        </div>
+        <p *ngIf="checkoutError" class="checkout-error">{{ checkoutError }}</p>
+        <button class="btn btn-success btn-block btn-lg" (click)="confirmCheckout()" [disabled]="checkoutLoading">
+          <svg *ngIf="checkoutLoading" class="btn-spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <svg *ngIf="!checkoutLoading" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          {{ checkoutLoading ? 'Procesando...' : 'Confirmar Compra' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RECEIPT ===== -->
+  <div class="modal-overlay" *ngIf="receipt" (click)="receipt = null; showCheckout = false"></div>
+  <div class="modal-panel receipt-panel" *ngIf="receipt" [class.open]="!!receipt">
+    <div class="receipt-header">
+      <div class="receipt-check">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Compra Exitosa</h2>
+      <p>Gracias por tu compra, {{ receipt.clienteNombre }}. Te enviaremos la boleta a {{ receipt.clienteCorreo }}.</p>
+    </div>
+    <div class="receipt-body">
+      <div class="receipt-meta">
+        <div class="receipt-meta-item">
+          <span class="receipt-meta-label">Boleta #</span>
+          <span class="receipt-meta-value">{{ receipt.carritoId }}</span>
+        </div>
+        <div class="receipt-meta-item">
+          <span class="receipt-meta-label">Fecha</span>
+          <span class="receipt-meta-value">{{ receipt.fecha }}</span>
+        </div>
+        <div class="receipt-meta-item">
+          <span class="receipt-meta-label">Cliente</span>
+          <span class="receipt-meta-value">{{ receipt.clienteNombre }}</span>
+        </div>
+      </div>
+      <table class="receipt-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cant.</th>
+            <th>P. Unit.</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of receipt.items">
+            <td>{{ item.productoNombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>${{ item.precioUnitario.toLocaleString('es-CL') }}</td>
+            <td>${{ item.subtotal.toLocaleString('es-CL') }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="receipt-total">
+        <span>Total</span>
+        <strong>${{ receipt.total.toLocaleString('es-CL') }}</strong>
+      </div>
+    </div>
+    <div class="receipt-footer">
+      <button class="btn btn-primary btn-block btn-lg" (click)="receipt = null; showCheckout = false">
+        Seguir Comprando
+      </button>
+    </div>
+  </div>
 
 </div>

@@ -15,4 +15,5 @@ export class CartComponent {
   @Input() itemCount = 0;
   @Input() total = 0;
   @Output() remove = new EventEmitter<number>();
+  @Output() checkout = new EventEmitter<void>();
 }

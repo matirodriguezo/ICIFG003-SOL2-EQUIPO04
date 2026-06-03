@@ -5,6 +5,7 @@ import { CartItem } from './models/product';
 import { Producto, CategoriaProducto } from './models/backend.models';
 import { ProductoService } from './services/producto.service';
 import { CategoriaService } from './services/categoria.service';
+import { CheckoutService, CheckoutResponse } from './services/checkout.service';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CartComponent } from './components/cart/cart.component';
 import { MessageBannerComponent } from './components/message-banner/message-banner.component';
@@ -51,9 +52,17 @@ export class App implements OnInit {
   errors: FormErrors = {};
   success = false;
 
+  checkoutForm = { nombre: '', correo: '' };
+  checkoutErrors: FormErrors = {};
+  showCheckout = false;
+  checkoutLoading = false;
+  checkoutError = '';
+  receipt: CheckoutResponse | null = null;
+
   constructor(
     private productoService: ProductoService,
     private categoriaService: CategoriaService,
+    private checkoutService: CheckoutService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -145,6 +154,69 @@ export class App implements OnInit {
 
   toggleCart(): void {
     this.showCart = !this.showCart;
+  }
+
+  openCheckout(): void {
+    this.showCart = false;
+    this.showCheckout = true;
+    this.checkoutForm = { nombre: '', correo: '' };
+    this.checkoutErrors = {};
+    this.checkoutError = '';
+    this.receipt = null;
+  }
+
+  closeCheckout(): void {
+    this.showCheckout = false;
+  }
+
+  confirmCheckout(): void {
+    if (!this.validateCheckoutForm()) return;
+
+    this.checkoutLoading = true;
+    this.checkoutError = '';
+
+    const items = this.cartItems.map((item) => ({
+      productoId: item.id,
+      cantidad: item.quantity
+    }));
+
+    this.checkoutService.checkout({
+      nombre: this.checkoutForm.nombre,
+      correo: this.checkoutForm.correo,
+      items
+    }).subscribe({
+      next: (response) => {
+        this.receipt = response;
+        this.checkoutLoading = false;
+        this.cartItems = [];
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.checkoutError = err.message || 'Error al procesar la compra. Intenta nuevamente.';
+        this.checkoutLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private validateCheckoutForm(): boolean {
+    const errs: FormErrors = {};
+    if (!this.checkoutForm.nombre.trim()) {
+      errs.name = 'El nombre es obligatorio';
+    }
+    if (!this.checkoutForm.correo.trim()) {
+      errs.email = 'El correo es obligatorio';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.checkoutForm.correo)) {
+      errs.email = 'Ingresa un correo válido';
+    }
+    this.checkoutErrors = errs;
+    return Object.keys(errs).length === 0;
+  }
+
+  clearCheckoutError(field: keyof FormErrors): void {
+    if (this.checkoutErrors[field]) {
+      this.checkoutErrors = { ...this.checkoutErrors, [field]: '' };
+    }
   }
 
   handleSubmit(): void {
