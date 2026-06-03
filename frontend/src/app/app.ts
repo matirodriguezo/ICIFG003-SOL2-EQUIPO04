@@ -14,6 +14,11 @@ interface FormErrors {
   name?: string;
   email?: string;
   message?: string;
+  rut?: string;
+  nombre?: string;
+  apellido?: string;
+  correo?: string;
+  telefono?: string;
 }
 
 @Component({
@@ -52,7 +57,7 @@ export class App implements OnInit {
   errors: FormErrors = {};
   success = false;
 
-  checkoutForm = { nombre: '', correo: '' };
+  checkoutForm = { rut: '', nombre: '', apellido: '', correo: '', telefono: '', direccion: '' };
   checkoutErrors: FormErrors = {};
   showCheckout = false;
   checkoutLoading = false;
@@ -159,7 +164,7 @@ export class App implements OnInit {
   openCheckout(): void {
     this.showCart = false;
     this.showCheckout = true;
-    this.checkoutForm = { nombre: '', correo: '' };
+    this.checkoutForm = { rut: '', nombre: '', apellido: '', correo: '', telefono: '', direccion: '' };
     this.checkoutErrors = {};
     this.checkoutError = '';
     this.receipt = null;
@@ -181,8 +186,12 @@ export class App implements OnInit {
     }));
 
     this.checkoutService.checkout({
+      rut: this.checkoutForm.rut,
       nombre: this.checkoutForm.nombre,
+      apellido: this.checkoutForm.apellido,
       correo: this.checkoutForm.correo,
+      telefono: this.checkoutForm.telefono,
+      direccion: this.checkoutForm.direccion,
       items
     }).subscribe({
       next: (response) => {
@@ -200,21 +209,30 @@ export class App implements OnInit {
   }
 
   private validateCheckoutForm(): boolean {
-    const errs: FormErrors = {};
+    const errs: any = {};
+    if (!this.checkoutForm.rut.trim()) {
+      errs.rut = 'El RUT es obligatorio';
+    }
     if (!this.checkoutForm.nombre.trim()) {
-      errs.name = 'El nombre es obligatorio';
+      errs.nombre = 'El nombre es obligatorio';
+    }
+    if (!this.checkoutForm.apellido.trim()) {
+      errs.apellido = 'El apellido es obligatorio';
     }
     if (!this.checkoutForm.correo.trim()) {
-      errs.email = 'El correo es obligatorio';
+      errs.correo = 'El correo es obligatorio';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.checkoutForm.correo)) {
-      errs.email = 'Ingresa un correo válido';
+      errs.correo = 'Ingresa un correo válido';
+    }
+    if (!this.checkoutForm.telefono.trim()) {
+      errs.telefono = 'El teléfono es obligatorio';
     }
     this.checkoutErrors = errs;
     return Object.keys(errs).length === 0;
   }
 
-  clearCheckoutError(field: keyof FormErrors): void {
-    if (this.checkoutErrors[field]) {
+  clearCheckoutError(field: string): void {
+    if ((this.checkoutErrors as any)[field]) {
       this.checkoutErrors = { ...this.checkoutErrors, [field]: '' };
     }
   }

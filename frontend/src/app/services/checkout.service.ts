@@ -8,8 +8,12 @@ export interface CheckoutItem {
 }
 
 export interface CheckoutRequest {
+  rut: string;
   nombre: string;
+  apellido: string;
   correo: string;
+  telefono: string;
+  direccion: string;
   items: CheckoutItem[];
 }
 
@@ -23,8 +27,12 @@ export interface ItemResponse {
 export interface CheckoutResponse {
   carritoId: number;
   fecha: string;
+  clienteRut: string;
   clienteNombre: string;
+  clienteApellido: string;
   clienteCorreo: string;
+  clienteTelefono: string;
+  clienteDireccion: string;
   total: number;
   items: ItemResponse[];
 }

@@ -392,15 +392,38 @@
 
       <div class="checkout-form">
         <h3>Tus datos</h3>
-        <div class="form-field">
-          <label for="checkout-name">Nombre completo</label>
-          <input id="checkout-name" type="text" [(ngModel)]="checkoutForm.nombre" name="checkoutName" (ngModelChange)="clearCheckoutError('name')" [class.input-error]="checkoutErrors.name" placeholder="Tu nombre" />
-          <p *ngIf="checkoutErrors.name" class="error-text">{{ checkoutErrors.name }}</p>
+        <div class="form-row">
+          <div class="form-field form-field-half">
+            <label for="checkout-rut">RUT</label>
+            <input id="checkout-rut" type="text" [(ngModel)]="checkoutForm.rut" name="checkoutRut" (ngModelChange)="clearCheckoutError('rut')" [class.input-error]="checkoutErrors.rut" placeholder="12.345.678-9" />
+            <p *ngIf="checkoutErrors.rut" class="error-text">{{ checkoutErrors.rut }}</p>
+          </div>
+          <div class="form-field form-field-half">
+            <label for="checkout-telefono">Teléfono</label>
+            <input id="checkout-telefono" type="text" [(ngModel)]="checkoutForm.telefono" name="checkoutTelefono" (ngModelChange)="clearCheckoutError('telefono')" [class.input-error]="checkoutErrors.telefono" placeholder="+56 9 1234 5678" />
+            <p *ngIf="checkoutErrors.telefono" class="error-text">{{ checkoutErrors.telefono }}</p>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field form-field-half">
+            <label for="checkout-nombre">Nombre</label>
+            <input id="checkout-nombre" type="text" [(ngModel)]="checkoutForm.nombre" name="checkoutNombre" (ngModelChange)="clearCheckoutError('nombre')" [class.input-error]="checkoutErrors.nombre" placeholder="Tu nombre" />
+            <p *ngIf="checkoutErrors.nombre" class="error-text">{{ checkoutErrors.nombre }}</p>
+          </div>
+          <div class="form-field form-field-half">
+            <label for="checkout-apellido">Apellido</label>
+            <input id="checkout-apellido" type="text" [(ngModel)]="checkoutForm.apellido" name="checkoutApellido" (ngModelChange)="clearCheckoutError('apellido')" [class.input-error]="checkoutErrors.apellido" placeholder="Tu apellido" />
+            <p *ngIf="checkoutErrors.apellido" class="error-text">{{ checkoutErrors.apellido }}</p>
+          </div>
         </div>
         <div class="form-field">
           <label for="checkout-email">Correo Electrónico</label>
-          <input id="checkout-email" type="email" [(ngModel)]="checkoutForm.correo" name="checkoutEmail" (ngModelChange)="clearCheckoutError('email')" [class.input-error]="checkoutErrors.email" placeholder="tu@correo.cl" />
-          <p *ngIf="checkoutErrors.email" class="error-text">{{ checkoutErrors.email }}</p>
+          <input id="checkout-email" type="email" [(ngModel)]="checkoutForm.correo" name="checkoutEmail" (ngModelChange)="clearCheckoutError('correo')" [class.input-error]="checkoutErrors.correo" placeholder="tu@correo.cl" />
+          <p *ngIf="checkoutErrors.correo" class="error-text">{{ checkoutErrors.correo }}</p>
+        </div>
+        <div class="form-field">
+          <label for="checkout-direccion">Dirección</label>
+          <input id="checkout-direccion" type="text" [(ngModel)]="checkoutForm.direccion" name="checkoutDireccion" placeholder="Av. Principal 123, Santiago" />
         </div>
         <p *ngIf="checkoutError" class="checkout-error">{{ checkoutError }}</p>
         <button class="btn btn-success btn-block btn-lg" (click)="confirmCheckout()" [disabled]="checkoutLoading">
@@ -420,7 +443,7 @@
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <h2>Compra Exitosa</h2>
-      <p>Gracias por tu compra, {{ receipt.clienteNombre }}. Te enviaremos la boleta a {{ receipt.clienteCorreo }}.</p>
+      <p>Gracias por tu compra, {{ receipt.clienteNombre }} {{ receipt.clienteApellido }}. Te enviaremos la boleta a {{ receipt.clienteCorreo }}.</p>
     </div>
     <div class="receipt-body">
       <div class="receipt-meta">
@@ -434,7 +457,19 @@
         </div>
         <div class="receipt-meta-item">
           <span class="receipt-meta-label">Cliente</span>
-          <span class="receipt-meta-value">{{ receipt.clienteNombre }}</span>
+          <span class="receipt-meta-value">{{ receipt.clienteNombre }} {{ receipt.clienteApellido }}</span>
+        </div>
+        <div class="receipt-meta-item">
+          <span class="receipt-meta-label">RUT</span>
+          <span class="receipt-meta-value">{{ receipt.clienteRut }}</span>
+        </div>
+        <div class="receipt-meta-item">
+          <span class="receipt-meta-label">Teléfono</span>
+          <span class="receipt-meta-value">{{ receipt.clienteTelefono }}</span>
+        </div>
+        <div class="receipt-meta-item" *ngIf="receipt.clienteDireccion">
+          <span class="receipt-meta-label">Dirección</span>
+          <span class="receipt-meta-value">{{ receipt.clienteDireccion }}</span>
         </div>
       </div>
       <table class="receipt-table">

@@ -47,24 +47,34 @@ public class CheckoutController {
     @PostMapping
     public ResponseEntity<?> checkout(@RequestBody CheckoutRequest request) {
         try {
+            // 1. Validar campos obligatorios
+            if (request.getRut() == null || request.getRut().trim().isEmpty()) {
+                return ResponseEntity.status(400).body("El RUT es obligatorio");
+            }
             if (request.getNombre() == null || request.getNombre().trim().isEmpty()) {
                 return ResponseEntity.status(400).body("El nombre es obligatorio");
             }
+            if (request.getApellido() == null || request.getApellido().trim().isEmpty()) {
+                return ResponseEntity.status(400).body("El apellido es obligatorio");
+            }
             if (request.getCorreo() == null || request.getCorreo().trim().isEmpty()) {
                 return ResponseEntity.status(400).body("El correo es obligatorio");
+            }
+            if (request.getTelefono() == null || request.getTelefono().trim().isEmpty()) {
+                return ResponseEntity.status(400).body("El tel\u00e9fono es obligatorio");
             }
             if (request.getItems() == null || request.getItems().isEmpty()) {
                 return ResponseEntity.status(400).body("Debe incluir al menos un producto");
             }
 
-            // 1. Crear cliente con datos mínimos
+            // 2. Crear cliente
             ClienteEntity cliente = new ClienteEntity();
-            cliente.setRut("pendiente");
+            cliente.setRut(request.getRut());
             cliente.setNombre(request.getNombre());
-            cliente.setApellido("");
+            cliente.setApellido(request.getApellido());
             cliente.setCorreo(request.getCorreo());
-            cliente.setTelefono("pendiente");
-            cliente.setDireccion("");
+            cliente.setTelefono(request.getTelefono());
+            cliente.setDireccion(request.getDireccion() != null ? request.getDireccion() : "");
             cliente.setFecha_registro(new Date());
             cliente = clienteRepo.save(cliente);
 
@@ -115,8 +125,12 @@ public class CheckoutController {
             CheckoutResponse response = new CheckoutResponse();
             response.setCarritoId(carrito.getId());
             response.setFecha(carrito.getFecha_creacion().toString());
+            response.setClienteRut(cliente.getRut());
             response.setClienteNombre(cliente.getNombre());
+            response.setClienteApellido(cliente.getApellido());
             response.setClienteCorreo(cliente.getCorreo());
+            response.setClienteTelefono(cliente.getTelefono());
+            response.setClienteDireccion(cliente.getDireccion());
             response.setTotal(total);
             response.setItems(itemResponses);
 
