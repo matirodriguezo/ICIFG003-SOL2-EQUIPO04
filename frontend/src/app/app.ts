@@ -136,6 +136,7 @@ export class App implements OnInit {
           ? { ...item, quantity: item.quantity + 1 }
           : item
       );
+      this.showCart = true;
       return;
     }
     this.cartItems = [
@@ -151,6 +152,7 @@ export class App implements OnInit {
         quantity: 1
       }
     ];
+    this.showCart = true;
   }
 
   removeFromCart(productId: number): void {
