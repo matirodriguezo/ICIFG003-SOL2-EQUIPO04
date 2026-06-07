@@ -435,6 +435,9 @@
     </div>
   </div>
 
+  <!-- ===== TOAST ===== -->
+  <app-toast *ngIf="toastMessage" [message]="toastMessage" (dismiss)="toastMessage = ''"></app-toast>
+
   <!-- ===== RECEIPT ===== -->
   <div class="modal-overlay" *ngIf="receipt" (click)="receipt = null; showCheckout = false"></div>
   <div class="modal-panel receipt-panel" *ngIf="receipt" [class.open]="!!receipt">

@@ -9,6 +9,7 @@ import { CheckoutService, CheckoutResponse } from './services/checkout.service';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CartComponent } from './components/cart/cart.component';
 import { MessageBannerComponent } from './components/message-banner/message-banner.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 interface FormErrors {
   name?: string;
@@ -29,7 +30,8 @@ interface FormErrors {
     FormsModule,
     ProductCardComponent,
     CartComponent,
-    MessageBannerComponent
+    MessageBannerComponent,
+    ToastComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
@@ -45,6 +47,7 @@ export class App implements OnInit {
   cartItems: CartItem[] = [];
   showCart = false;
   mobileMenuOpen = false;
+  toastMessage = '';
 
   readonly navLinks: { label: string; href: string }[] = [
     { label: 'Inicio', href: '#inicio' },
@@ -136,6 +139,7 @@ export class App implements OnInit {
           ? { ...item, quantity: item.quantity + 1 }
           : item
       );
+      this.toastMessage = producto.nombre + ' agregado al carrito';
       return;
     }
     this.cartItems = [
@@ -151,6 +155,7 @@ export class App implements OnInit {
         quantity: 1
       }
     ];
+    this.toastMessage = producto.nombre + ' agregado al carrito';
   }
 
   removeFromCart(productId: number): void {
