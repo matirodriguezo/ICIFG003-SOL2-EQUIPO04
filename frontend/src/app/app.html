@@ -395,7 +395,7 @@
         <div class="form-row">
           <div class="form-field form-field-half">
             <label for="checkout-rut">RUT</label>
-            <input id="checkout-rut" type="text" [(ngModel)]="checkoutForm.rut" name="checkoutRut" (ngModelChange)="clearCheckoutError('rut')" [class.input-error]="checkoutErrors.rut" placeholder="12.345.678-9" />
+            <input id="checkout-rut" type="text" [(ngModel)]="checkoutForm.rut" (ngModelChange)="onRUTInput($event)" name="checkoutRut" [class.input-error]="checkoutErrors.rut" placeholder="12.345.678-9" maxlength="12" />
             <p *ngIf="checkoutErrors.rut" class="error-text">{{ checkoutErrors.rut }}</p>
           </div>
           <div class="form-field form-field-half">
@@ -407,12 +407,12 @@
         <div class="form-row">
           <div class="form-field form-field-half">
             <label for="checkout-nombre">Nombre</label>
-            <input id="checkout-nombre" type="text" [(ngModel)]="checkoutForm.nombre" name="checkoutNombre" (ngModelChange)="clearCheckoutError('nombre')" [class.input-error]="checkoutErrors.nombre" placeholder="Tu nombre" />
+            <input id="checkout-nombre" type="text" [(ngModel)]="checkoutForm.nombre" name="checkoutNombre" (ngModelChange)="clearCheckoutError('nombre')" [class.input-error]="checkoutErrors.nombre" placeholder="Ej: Juan" />
             <p *ngIf="checkoutErrors.nombre" class="error-text">{{ checkoutErrors.nombre }}</p>
           </div>
           <div class="form-field form-field-half">
             <label for="checkout-apellido">Apellido</label>
-            <input id="checkout-apellido" type="text" [(ngModel)]="checkoutForm.apellido" name="checkoutApellido" (ngModelChange)="clearCheckoutError('apellido')" [class.input-error]="checkoutErrors.apellido" placeholder="Tu apellido" />
+            <input id="checkout-apellido" type="text" [(ngModel)]="checkoutForm.apellido" name="checkoutApellido" (ngModelChange)="clearCheckoutError('apellido')" [class.input-error]="checkoutErrors.apellido" placeholder="Ej: García" />
             <p *ngIf="checkoutErrors.apellido" class="error-text">{{ checkoutErrors.apellido }}</p>
           </div>
         </div>
@@ -423,7 +423,8 @@
         </div>
         <div class="form-field">
           <label for="checkout-direccion">Dirección</label>
-          <input id="checkout-direccion" type="text" [(ngModel)]="checkoutForm.direccion" name="checkoutDireccion" placeholder="Av. Principal 123, Santiago" />
+          <input id="checkout-direccion" type="text" [(ngModel)]="checkoutForm.direccion" name="checkoutDireccion" (ngModelChange)="clearCheckoutError('direccion')" [class.input-error]="checkoutErrors.direccion" placeholder="Av. Principal 123, Santiago" />
+          <p *ngIf="checkoutErrors.direccion" class="error-text">{{ checkoutErrors.direccion }}</p>
         </div>
         <p *ngIf="checkoutError" class="checkout-error">{{ checkoutError }}</p>
         <button class="btn btn-success btn-block btn-lg" (click)="confirmCheckout()" [disabled]="checkoutLoading">

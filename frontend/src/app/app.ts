@@ -10,6 +10,7 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 import { CartComponent } from './components/cart/cart.component';
 import { MessageBannerComponent } from './components/message-banner/message-banner.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { validateAndFormatRUT, validateChileanPhone, validateTextOnly, formatRUTWhileTyping } from './utils/rut-validator';
 
 interface FormErrors {
   name?: string;
@@ -20,6 +21,7 @@ interface FormErrors {
   apellido?: string;
   correo?: string;
   telefono?: string;
+  direccion?: string;
 }
 
 @Component({
@@ -215,25 +217,55 @@ export class App implements OnInit {
 
   private validateCheckoutForm(): boolean {
     const errs: any = {};
-    if (!this.checkoutForm.rut.trim()) {
-      errs.rut = 'El RUT es obligatorio';
+
+    // Validate RUT
+    const rutValidation = validateAndFormatRUT(this.checkoutForm.rut);
+    if (!rutValidation.isValid) {
+      errs.rut = rutValidation.error || 'RUT inválido';
+    } else {
+      // Update form with formatted RUT
+      this.checkoutForm.rut = rutValidation.formatted;
     }
-    if (!this.checkoutForm.nombre.trim()) {
-      errs.nombre = 'El nombre es obligatorio';
+
+    // Validate Name (only letters and spaces)
+    const nameValidation = validateTextOnly(this.checkoutForm.nombre, 'El nombre');
+    if (!nameValidation.isValid) {
+      errs.nombre = nameValidation.error;
     }
-    if (!this.checkoutForm.apellido.trim()) {
-      errs.apellido = 'El apellido es obligatorio';
+
+    // Validate Last Name (only letters and spaces)
+    const lastNameValidation = validateTextOnly(this.checkoutForm.apellido, 'El apellido');
+    if (!lastNameValidation.isValid) {
+      errs.apellido = lastNameValidation.error;
     }
+
+    // Validate Email
     if (!this.checkoutForm.correo.trim()) {
       errs.correo = 'El correo es obligatorio';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.checkoutForm.correo)) {
       errs.correo = 'Ingresa un correo válido';
     }
-    if (!this.checkoutForm.telefono.trim()) {
-      errs.telefono = 'El teléfono es obligatorio';
+
+    // Validate Phone
+    const phoneValidation = validateChileanPhone(this.checkoutForm.telefono);
+    if (!phoneValidation.isValid) {
+      errs.telefono = phoneValidation.error;
     }
+
+    // Validate Address
+    if (!this.checkoutForm.direccion.trim()) {
+      errs.direccion = 'La dirección es obligatoria';
+    }
+
     this.checkoutErrors = errs;
     return Object.keys(errs).length === 0;
+  }
+
+  onRUTInput(value: string): void {
+    // Clear error when user is typing
+    if (this.checkoutErrors.rut) {
+      this.clearCheckoutError('rut');
+    }
   }
 
   clearCheckoutError(field: string): void {
