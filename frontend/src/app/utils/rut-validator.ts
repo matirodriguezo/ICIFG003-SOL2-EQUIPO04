@@ -24,8 +24,8 @@ export function validateAndFormatRUT(rut: string): {
   // Remove formatting
   const cleanRUT = rut.replace(/[.\-]/g, '').toUpperCase();
 
-  // Check if it contains only numbers and optionally K at the end
-  if (!/^[0-9]{7,8}K?$/.test(cleanRUT)) {
+// Check if it contains only numbers and optionally K at the end
+  if (!/^[0-9]{7,8}[0-9K]$/.test(cleanRUT)) {
     return {
       isValid: false,
       formatted: '',
