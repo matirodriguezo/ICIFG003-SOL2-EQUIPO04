@@ -46,17 +46,6 @@ export function validateAndFormatRUT(rut: string): {
     };
   }
 
-  // Calculate the correct verification digit
-  const expectedDigit = calculateVerificationDigit(body);
-
-  if (verificationDigit !== expectedDigit) {
-    return {
-      isValid: false,
-      formatted: '',
-      error: 'El RUT ingresado no es válido (ej: 12.345.678-K con dígito verificador correcto)'
-    };
-  }
-
   // Format the RUT
   const formatted = formatRUT(body, verificationDigit);
 

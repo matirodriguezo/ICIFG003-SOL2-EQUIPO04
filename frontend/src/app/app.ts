@@ -262,6 +262,9 @@ export class App implements OnInit {
   }
 
   onRUTInput(value: string): void {
+    // Format RUT while typing
+    this.checkoutForm.rut = formatRUTWhileTyping(value);
+
     // Clear error when user is typing
     if (this.checkoutErrors.rut) {
       this.clearCheckoutError('rut');
