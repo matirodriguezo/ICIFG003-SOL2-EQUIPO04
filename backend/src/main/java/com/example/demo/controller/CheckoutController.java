@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,7 @@ import com.example.demo.repository.ProductoRepository;
 
 @RestController
 @RequestMapping("/api/v1/checkout")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8080"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:8080" })
 public class CheckoutController {
 
     @Autowired
@@ -84,8 +83,9 @@ public class CheckoutController {
             Long costoEnvio = 3990L; // Por defecto
             List<DetalleCarritoEntity> detalles = new ArrayList<>();
             List<ItemResponse> itemResponses = new ArrayList<>();
-            
-            String codigo = request.getCodigoPromocional() != null ? request.getCodigoPromocional().trim().toUpperCase() : "";
+
+            String codigo = request.getCodigoPromocional() != null ? request.getCodigoPromocional().trim().toUpperCase()
+                    : "";
 
             for (CheckoutItem item : request.getItems()) {
                 Optional<ProductoEntity> optProduct = productRepo.findById(item.getProductoId());
@@ -95,7 +95,7 @@ public class CheckoutController {
                 ProductoEntity product = optProduct.get();
                 Long subtotalItem = product.getPrecio().longValue() * item.getCantidad();
                 subtotalFinal += subtotalItem;
-                
+
                 // Aplicar descuento PET20 a productos premium
                 if ("PET20".equals(codigo) && product.getNombre().toLowerCase().contains("premium")) {
                     descuento += (long) (subtotalItem * 0.20);
@@ -108,12 +108,12 @@ public class CheckoutController {
                 ir.setSubtotal(subtotalItem);
                 itemResponses.add(ir);
             }
-            
+
             // Lógica de Envío Gratis
             if (subtotalFinal > 30000) {
                 costoEnvio = 0L;
             }
-            
+
             // Lógica Regalo Sorpresa
             if ("NUEVO".equals(codigo)) {
                 ItemResponse regalo = new ItemResponse();
@@ -123,7 +123,7 @@ public class CheckoutController {
                 regalo.setSubtotal(0L);
                 itemResponses.add(regalo);
             }
-            
+
             Long total = subtotalFinal - descuento + costoEnvio;
 
             CarritoEntity carrito = new CarritoEntity();

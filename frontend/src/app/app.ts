@@ -6,6 +6,7 @@ import { Producto, CategoriaProducto } from './models/backend.models';
 import { ProductoService } from './services/producto.service';
 import { CategoriaService } from './services/categoria.service';
 import { CheckoutService, CheckoutResponse } from './services/checkout.service';
+import { ContactoService } from './services/contacto.service';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CartComponent } from './components/cart/cart.component';
 import { MessageBannerComponent } from './components/message-banner/message-banner.component';
@@ -73,6 +74,7 @@ export class App implements OnInit {
     private productoService: ProductoService,
     private categoriaService: CategoriaService,
     private checkoutService: CheckoutService,
+    private contactoService: ContactoService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -305,11 +307,25 @@ export class App implements OnInit {
 
   handleSubmit(): void {
     if (!this.validateForm()) return;
-    this.success = true;
-    this.formData = { name: '', email: '', message: '' };
-    setTimeout(() => {
-      this.success = false;
-    }, 5000);
+
+    this.contactoService.enviarContacto({
+      nombre: this.formData.name,
+      email: this.formData.email,
+      mensaje: this.formData.message
+    }).subscribe({
+      next: () => {
+        this.success = true;
+        this.formData = { name: '', email: '', message: '' };
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.success = false;
+          this.cdr.detectChanges();
+        }, 5000);
+      },
+      error: (err) => {
+        alert('Hubo un error al enviar tu mensaje: ' + err.message);
+      }
+    });
   }
 
   clearError(field: keyof FormErrors): void {
