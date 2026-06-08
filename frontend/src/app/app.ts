@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartItem } from './models/product';
@@ -41,6 +41,8 @@ interface FormErrors {
   encapsulation: ViewEncapsulation.None
 })
 export class App implements OnInit {
+  @ViewChild(CartComponent) cartComponent!: CartComponent;
+
   productos: Producto[] = [];
   categorias: CategoriaProducto[] = [];
   loading = true;
@@ -233,6 +235,12 @@ export class App implements OnInit {
         this.receipt = response;
         this.checkoutLoading = false;
         this.cartItems = [];
+        if (this.cartComponent) {
+          this.cartComponent.promoCode = '';
+          this.cartComponent.appliedPromo = '';
+          this.cartComponent.promoError = '';
+          this.cartComponent.promoSuccess = '';
+        }
         this.cdr.detectChanges();
       },
       error: (err) => {

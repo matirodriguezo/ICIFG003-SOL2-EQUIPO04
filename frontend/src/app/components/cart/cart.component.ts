@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartItem } from '../../models/product';
@@ -25,7 +25,18 @@ export class CartComponent {
 
   applyPromo(): void {
     const code = this.promoCode.trim().toUpperCase();
-    if (code === 'PET20' || code === 'NUEVO') {
+    if (code === 'PET20') {
+      const hasPremium = this.items.some(item => item.nombre.toLowerCase().includes('premium'));
+      if (hasPremium) {
+        this.appliedPromo = code;
+        this.promoSuccess = 'Código aplicado. Válido solo para alimentos premium.';
+        this.promoError = '';
+      } else {
+        this.appliedPromo = '';
+        this.promoError = 'El código PET20 solo sirve para alimentos premium.';
+        this.promoSuccess = '';
+      }
+    } else if (code === 'NUEVO') {
       this.appliedPromo = code;
       this.promoSuccess = 'Código aplicado correctamente';
       this.promoError = '';

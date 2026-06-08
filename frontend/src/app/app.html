@@ -408,10 +408,7 @@
               {{ checkoutShipping === 0 ? 'GRATIS' : '$' + checkoutShipping.toLocaleString('es-CL') }}
             </strong>
           </div>
-          <div class="checkout-total" *ngIf="checkoutForm.codigoPromocional === 'NUEVO'" style="color: #D97706;">
-            <span style="font-size: 0.95rem; font-weight: 500;">Regalo Sorpresa</span>
-            <strong style="font-size: 1.05rem;">Incluido</strong>
-          </div>
+
           <div class="checkout-total" style="border-top: 2px solid var(--color-primary-light); padding-top: 14px; margin-top: 14px;">
             <span>Total a Pagar</span>
             <strong style="font-size: 1.5rem;">${{ checkoutFinalTotal.toLocaleString('es-CL') }}</strong>
@@ -538,10 +535,7 @@
             {{ receipt.costoEnvio === 0 ? 'GRATIS' : '$' + receipt.costoEnvio.toLocaleString('es-CL') }}
           </span>
         </div>
-        <div class="receipt-summary-row" *ngIf="receiptHasRegalo" style="color: #D97706;">
-          <span>Regalo Sorpresa</span>
-          <span style="font-weight: 800;">Incluido</span>
-        </div>
+
       </div>
       <div class="receipt-total">
         <span>Total a Pagar</span>
