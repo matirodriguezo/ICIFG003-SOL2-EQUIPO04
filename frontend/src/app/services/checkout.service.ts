@@ -14,6 +14,7 @@ export interface CheckoutRequest {
   correo: string;
   telefono: string;
   direccion: string;
+  codigoPromocional?: string;
   items: CheckoutItem[];
 }
 
@@ -33,6 +34,9 @@ export interface CheckoutResponse {
   clienteCorreo: string;
   clienteTelefono: string;
   clienteDireccion: string;
+  subtotal: number;
+  descuento: number;
+  costoEnvio: number;
   total: number;
   items: ItemResponse[];
 }

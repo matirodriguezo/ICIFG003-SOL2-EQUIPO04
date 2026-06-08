@@ -11,6 +11,9 @@ public class CheckoutResponse {
     private String clienteCorreo;
     private String clienteTelefono;
     private String clienteDireccion;
+    private Long subtotal;
+    private Long descuento;
+    private Long costoEnvio;
     private Long total;
     private List<ItemResponse> items;
 
@@ -30,6 +33,12 @@ public class CheckoutResponse {
     public void setClienteTelefono(String clienteTelefono) { this.clienteTelefono = clienteTelefono; }
     public String getClienteDireccion() { return clienteDireccion; }
     public void setClienteDireccion(String clienteDireccion) { this.clienteDireccion = clienteDireccion; }
+    public Long getSubtotal() { return subtotal; }
+    public void setSubtotal(Long subtotal) { this.subtotal = subtotal; }
+    public Long getDescuento() { return descuento; }
+    public void setDescuento(Long descuento) { this.descuento = descuento; }
+    public Long getCostoEnvio() { return costoEnvio; }
+    public void setCostoEnvio(Long costoEnvio) { this.costoEnvio = costoEnvio; }
     public Long getTotal() { return total; }
     public void setTotal(Long total) { this.total = total; }
     public List<ItemResponse> getItems() { return items; }

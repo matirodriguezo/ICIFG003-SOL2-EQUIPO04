@@ -9,6 +9,7 @@ public class CheckoutRequest {
     private String correo;
     private String telefono;
     private String direccion;
+    private String codigoPromocional;
     private List<CheckoutItem> items;
 
     public String getRut() { return rut; }
@@ -23,6 +24,8 @@ public class CheckoutRequest {
     public void setTelefono(String telefono) { this.telefono = telefono; }
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
+    public String getCodigoPromocional() { return codigoPromocional; }
+    public void setCodigoPromocional(String codigoPromocional) { this.codigoPromocional = codigoPromocional; }
     public List<CheckoutItem> getItems() { return items; }
     public void setItems(List<CheckoutItem> items) { this.items = items; }
 

@@ -78,10 +78,14 @@ public class CheckoutController {
             cliente.setFecha_registro(new Date());
             cliente = clienteRepo.save(cliente);
 
-            // 2. Calcular total y crear carrito
-            Long total = 0L;
+            // 3. Calcular subtotal, descuento, envío y crear carrito
+            Long subtotalFinal = 0L;
+            Long descuento = 0L;
+            Long costoEnvio = 3990L; // Por defecto
             List<DetalleCarritoEntity> detalles = new ArrayList<>();
             List<ItemResponse> itemResponses = new ArrayList<>();
+            
+            String codigo = request.getCodigoPromocional() != null ? request.getCodigoPromocional().trim().toUpperCase() : "";
 
             for (CheckoutItem item : request.getItems()) {
                 Optional<ProductoEntity> optProduct = productRepo.findById(item.getProductoId());
@@ -89,16 +93,38 @@ public class CheckoutController {
                     return ResponseEntity.status(400).body("Producto no encontrado con id: " + item.getProductoId());
                 }
                 ProductoEntity product = optProduct.get();
-                Long subtotal = product.getPrecio().longValue() * item.getCantidad();
-                total += subtotal;
+                Long subtotalItem = product.getPrecio().longValue() * item.getCantidad();
+                subtotalFinal += subtotalItem;
+                
+                // Aplicar descuento PET20 a productos premium
+                if ("PET20".equals(codigo) && product.getNombre().toLowerCase().contains("premium")) {
+                    descuento += (long) (subtotalItem * 0.20);
+                }
 
                 ItemResponse ir = new ItemResponse();
                 ir.setProductoNombre(product.getNombre());
                 ir.setCantidad(item.getCantidad());
                 ir.setPrecioUnitario(product.getPrecio().longValue());
-                ir.setSubtotal(subtotal);
+                ir.setSubtotal(subtotalItem);
                 itemResponses.add(ir);
             }
+            
+            // Lógica de Envío Gratis
+            if (subtotalFinal > 30000) {
+                costoEnvio = 0L;
+            }
+            
+            // Lógica Regalo Sorpresa
+            if ("NUEVO".equals(codigo)) {
+                ItemResponse regalo = new ItemResponse();
+                regalo.setProductoNombre("Regalo Sorpresa");
+                regalo.setCantidad(1L);
+                regalo.setPrecioUnitario(0L);
+                regalo.setSubtotal(0L);
+                itemResponses.add(regalo);
+            }
+            
+            Long total = subtotalFinal - descuento + costoEnvio;
 
             CarritoEntity carrito = new CarritoEntity();
             carrito.setFecha_creacion(new Date());
@@ -131,6 +157,9 @@ public class CheckoutController {
             response.setClienteCorreo(cliente.getCorreo());
             response.setClienteTelefono(cliente.getTelefono());
             response.setClienteDireccion(cliente.getDireccion());
+            response.setSubtotal(subtotalFinal);
+            response.setDescuento(descuento);
+            response.setCostoEnvio(costoEnvio);
             response.setTotal(total);
             response.setItems(itemResponses);
 

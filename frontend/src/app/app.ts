@@ -62,7 +62,7 @@ export class App implements OnInit {
   errors: FormErrors = {};
   success = false;
 
-  checkoutForm = { rut: '', nombre: '', apellido: '', correo: '', telefono: '', direccion: '' };
+  checkoutForm = { rut: '', nombre: '', apellido: '', correo: '', telefono: '', direccion: '', codigoPromocional: '' };
   checkoutErrors: FormErrors = {};
   showCheckout = false;
   checkoutLoading = false;
@@ -133,6 +133,31 @@ export class App implements OnInit {
     );
   }
 
+  get checkoutDiscount(): number {
+    if (this.checkoutForm.codigoPromocional === 'PET20') {
+      const premiumTotal = this.cartItems
+        .filter(item => item.nombre.toLowerCase().includes('premium'))
+        .reduce((sum, item) => sum + (item.precio * item.quantity), 0);
+      return premiumTotal * 0.20;
+    }
+    return 0;
+  }
+
+  get checkoutShipping(): number {
+    if (this.cartItems.length === 0) return 0;
+    return this.cartTotal > 30000 ? 0 : 3990;
+  }
+
+  get checkoutFinalTotal(): number {
+    if (this.cartItems.length === 0) return 0;
+    return this.cartTotal - this.checkoutDiscount + this.checkoutShipping;
+  }
+
+  get receiptHasRegalo(): boolean {
+    if (!this.receipt) return false;
+    return this.receipt.items.some((item: any) => item.productoNombre === 'Regalo Sorpresa');
+  }
+
   addToCart(producto: Producto): void {
     const existing = this.cartItems.find((item) => item.id === producto.id);
     if (existing) {
@@ -168,10 +193,10 @@ export class App implements OnInit {
     this.showCart = !this.showCart;
   }
 
-  openCheckout(): void {
+  openCheckout(codigoPromocional: string = ''): void {
     this.showCart = false;
     this.showCheckout = true;
-    this.checkoutForm = { rut: '', nombre: '', apellido: '', correo: '', telefono: '', direccion: '' };
+    this.checkoutForm = { rut: '', nombre: '', apellido: '', correo: '', telefono: '', direccion: '', codigoPromocional };
     this.checkoutErrors = {};
     this.checkoutError = '';
     this.receipt = null;
@@ -199,6 +224,7 @@ export class App implements OnInit {
       correo: this.checkoutForm.correo,
       telefono: this.checkoutForm.telefono,
       direccion: this.checkoutForm.direccion,
+      codigoPromocional: this.checkoutForm.codigoPromocional,
       items
     }).subscribe({
       next: (response) => {

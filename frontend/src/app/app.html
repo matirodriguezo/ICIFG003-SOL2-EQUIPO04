@@ -383,10 +383,39 @@
             </div>
             <span class="checkout-item-price">${{ (item.precio * item.quantity).toLocaleString('es-CL') }}</span>
           </div>
+          
+          <!-- Regalo Sorpresa Highlighted -->
+          <div *ngIf="checkoutForm.codigoPromocional === 'NUEVO'" class="checkout-item" style="background: #FFFBEB; padding: 10px 14px; border-radius: 8px; border: 1.5px dashed #F59E0B; margin-top: 8px;">
+            <div class="checkout-item-info">
+              <span class="checkout-item-name" style="color: #D97706; font-weight: 700;">🎁 Regalo Sorpresa</span>
+              <span class="checkout-item-qty" style="background: #FDE68A; color: #D97706;">x1</span>
+            </div>
+            <span class="checkout-item-price" style="color: #D97706; font-weight: 800;">GRATIS</span>
+          </div>
         </div>
-        <div class="checkout-total">
-          <span>Total</span>
-          <strong>${{ cartTotal.toLocaleString('es-CL') }}</strong>
+        <div class="checkout-summary-breakdown">
+          <div class="checkout-total">
+            <span style="font-size: 0.95rem; font-weight: 500; color: var(--color-text-secondary);">Subtotal</span>
+            <strong style="font-size: 1.05rem;">${{ cartTotal.toLocaleString('es-CL') }}</strong>
+          </div>
+          <div class="checkout-total" *ngIf="checkoutDiscount > 0" style="color: #F97316;">
+            <span style="font-size: 0.95rem; font-weight: 500;">Descuento Aplicado</span>
+            <strong style="font-size: 1.05rem;">-${{ checkoutDiscount.toLocaleString('es-CL') }}</strong>
+          </div>
+          <div class="checkout-total">
+            <span style="font-size: 0.95rem; font-weight: 500; color: var(--color-text-secondary);">Envío</span>
+            <strong style="font-size: 1.05rem;" [style.color]="checkoutShipping === 0 ? 'var(--color-success)' : 'inherit'">
+              {{ checkoutShipping === 0 ? 'GRATIS' : '$' + checkoutShipping.toLocaleString('es-CL') }}
+            </strong>
+          </div>
+          <div class="checkout-total" *ngIf="checkoutForm.codigoPromocional === 'NUEVO'" style="color: #D97706;">
+            <span style="font-size: 0.95rem; font-weight: 500;">Regalo Sorpresa</span>
+            <strong style="font-size: 1.05rem;">Incluido</strong>
+          </div>
+          <div class="checkout-total" style="border-top: 2px solid var(--color-primary-light); padding-top: 14px; margin-top: 14px;">
+            <span>Total a Pagar</span>
+            <strong style="font-size: 1.5rem;">${{ checkoutFinalTotal.toLocaleString('es-CL') }}</strong>
+          </div>
         </div>
       </div>
 
@@ -494,8 +523,28 @@
           </tr>
         </tbody>
       </table>
+      <div class="receipt-summary-breakdown">
+        <div class="receipt-summary-row">
+          <span>Subtotal</span>
+          <span>${{ receipt.subtotal.toLocaleString('es-CL') }}</span>
+        </div>
+        <div class="receipt-summary-row" *ngIf="receipt.descuento > 0" style="color: #F97316;">
+          <span>Descuento Aplicado</span>
+          <span>-${{ receipt.descuento.toLocaleString('es-CL') }}</span>
+        </div>
+        <div class="receipt-summary-row" *ngIf="receipt.costoEnvio !== undefined">
+          <span>Envío</span>
+          <span [style.color]="receipt.costoEnvio === 0 ? 'var(--color-success)' : 'inherit'">
+            {{ receipt.costoEnvio === 0 ? 'GRATIS' : '$' + receipt.costoEnvio.toLocaleString('es-CL') }}
+          </span>
+        </div>
+        <div class="receipt-summary-row" *ngIf="receiptHasRegalo" style="color: #D97706;">
+          <span>Regalo Sorpresa</span>
+          <span style="font-weight: 800;">Incluido</span>
+        </div>
+      </div>
       <div class="receipt-total">
-        <span>Total</span>
+        <span>Total a Pagar</span>
         <strong>${{ receipt.total.toLocaleString('es-CL') }}</strong>
       </div>
     </div>
