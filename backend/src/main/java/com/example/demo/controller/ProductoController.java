@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,11 +25,15 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+    private Logger logger = LoggerFactory.getLogger(ProductoController.class);
+
     @GetMapping
     public ResponseEntity<?> findAll() {
         try {
+            logger.info("Obteniendo todos los productos");
             return ResponseEntity.ok(productoService.findAll());
         } catch (Exception e) {
+            logger.error("Error al obtener los productos: " + e.getMessage());
             return ResponseEntity.status(404).body("Error al obtener los productos: " + e.getMessage());
         }
     }
@@ -35,8 +41,10 @@ public class ProductoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
+            logger.info("Obteniendo producto con ID: " + id);
             return ResponseEntity.ok(productoService.findById(id));
         } catch (Exception e) {
+            logger.error("Error al obtener el producto: " + e.getMessage());
             return ResponseEntity.status(404).body("Error al obtener el producto: " + e.getMessage());
         }
     }
@@ -44,8 +52,10 @@ public class ProductoController {
     @PostMapping
     public ResponseEntity<?> save(@RequestBody ProductoEntity producto) {
         try {
+            logger.info("Guardando producto con ID: " + producto.getId());
             return ResponseEntity.ok(productoService.save(producto));
         } catch (Exception e) {
+            logger.error("Error al guardar el producto: " + e.getMessage());
             return ResponseEntity.status(400).body("Error al guardar el producto: " + e.getMessage());
         }
     }
@@ -55,6 +65,7 @@ public class ProductoController {
         try {
             ProductoEntity existingProducto = productoService.findById(id);
             if (existingProducto == null) {
+                logger.error("Producto no encontrado con id: " + id);
                 return ResponseEntity.status(404).body("Producto no encontrado con id: " + id);
             }
             existingProducto.setNombre(producto.getNombre());
@@ -63,8 +74,10 @@ public class ProductoController {
             existingProducto.setStock(producto.getStock());
             existingProducto.setImagen(producto.getImagen());
             existingProducto.setCategoria(producto.getCategoria());
+            logger.info("Actualizando producto con ID: " + id);
             return ResponseEntity.ok(productoService.save(existingProducto));
         } catch (Exception e) {
+            logger.error("Error al actualizar el producto: " + e.getMessage());
             return ResponseEntity.status(404).body("Error al actualizar el producto: " + e.getMessage());
         }
     }
@@ -74,11 +87,14 @@ public class ProductoController {
         try {
             ProductoEntity existingProducto = productoService.findById(id);
             if (existingProducto == null) {
+                logger.error("Producto no encontrado con id: " + id);
                 return ResponseEntity.status(404).body("Producto no encontrado con id: " + id);
             }
             productoService.deleteById(id);
+            logger.info("Producto eliminado con ID: " + id);
             return ResponseEntity.ok("[]");
         } catch (Exception e) {
+            logger.error("Error al eliminar el producto: " + e.getMessage());
             return ResponseEntity.status(404).body("Error al eliminar el producto: " + e.getMessage());
         }
     }

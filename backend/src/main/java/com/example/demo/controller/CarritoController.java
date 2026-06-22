@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,11 +24,15 @@ public class CarritoController {
     @Autowired
     private ICarritoService carritoService;
 
+    private Logger logger = LoggerFactory.getLogger(CarritoController.class);
+
     @GetMapping
     public ResponseEntity<?> findAll() {
         try {
+            logger.info("Obteniendo todos los carritos");
             return ResponseEntity.ok(carritoService.findAll());
         } catch (Exception e) {
+            logger.error("Error al obtener los carritos: " + e.getMessage());
             return ResponseEntity.status(404).body("Error al obtener los carritos: " + e.getMessage());
         }
     }
@@ -34,8 +40,10 @@ public class CarritoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
+            logger.info("Obteniendo carrito con ID: " + id);
             return ResponseEntity.ok(carritoService.findById(id));
         } catch (Exception e) {
+            logger.error("Error al obtener el carrito con ID " + id + ": " + e.getMessage());
             return ResponseEntity.status(404).body("Error al obtener el carrito: " + e.getMessage());
         }
     }
@@ -43,8 +51,10 @@ public class CarritoController {
     @PostMapping
     public ResponseEntity<?> save(@RequestBody CarritoEntity carrito) {
         try {
+            logger.info("Guardando nuevo carrito: ID " + carrito.getId());
             return ResponseEntity.ok(carritoService.save(carrito));
         } catch (Exception e) {
+            logger.error("Error al guardar el carrito: " + e.getMessage());
             return ResponseEntity.status(400).body("Error al guardar el carrito: " + e.getMessage());
         }
     }
@@ -52,13 +62,17 @@ public class CarritoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CarritoEntity carrito) {
         try {
+            logger.info("Actualizando carrito con ID: " + id);
             CarritoEntity existingCarrito = carritoService.findById(id);
             if (existingCarrito == null) {
+                logger.error("Carrito no encontrado con ID" + id);
                 return ResponseEntity.status(404).body("Carrito no encontrado con id: " + id);
             }
             existingCarrito.setCliente(carrito.getCliente());
+            logger.info("Carrito actualizado exitosamente con ID: " + id);
             return ResponseEntity.ok(carritoService.save(existingCarrito));
         } catch (Exception e) {
+            logger.error("Error al actualizar el carrito con ID " + id + ": " + e.getMessage());
             return ResponseEntity.status(400).body("Error al actualizar el carrito: " + e.getMessage());
         }
     }
@@ -68,11 +82,14 @@ public class CarritoController {
         try {
             CarritoEntity existingCarrito = carritoService.findById(id);
             if (existingCarrito == null) {
+                logger.error("Carrito no encontrado con ID: " + id);
                 return ResponseEntity.status(404).body("Carrito no encontrado con id: " + id);
             }
             carritoService.deleteById(id);
+            logger.info("Carrito eliminado exitosamente, ID: " + id);
             return ResponseEntity.ok("[]");
         } catch (Exception e) {
+            logger.error("Error al eliminar el carrito con ID " + id + ": " + e.getMessage());
             return ResponseEntity.status(404).body("Error al eliminar el carrito: " + e.getMessage());
         }
     }

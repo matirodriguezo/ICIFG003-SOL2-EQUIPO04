@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,6 +44,8 @@ public class CheckoutController {
 
     @Autowired
     private ProductoRepository productRepo;
+    
+    private Logger logger = LoggerFactory.getLogger(CheckoutController.class);
 
     @PostMapping
     public ResponseEntity<?> checkout(@RequestBody CheckoutRequest request) {
@@ -90,6 +94,7 @@ public class CheckoutController {
             for (CheckoutItem item : request.getItems()) {
                 Optional<ProductoEntity> optProduct = productRepo.findById(item.getProductoId());
                 if (optProduct.isEmpty()) {
+                    logger.error("Producto no encontrado, ID : " + item.getProductoId());
                     return ResponseEntity.status(400).body("Producto no encontrado con id: " + item.getProductoId());
                 }
                 ProductoEntity product = optProduct.get();
@@ -132,7 +137,6 @@ public class CheckoutController {
             carrito.setTotal_carrito(total);
             carrito.setDetalle(new ArrayList<>());
             carrito = carritoRepo.save(carrito);
-
             // 3. Crear detalles del carrito
             for (int i = 0; i < request.getItems().size(); i++) {
                 CheckoutItem item = request.getItems().get(i);
@@ -163,9 +167,11 @@ public class CheckoutController {
             response.setTotal(total);
             response.setItems(itemResponses);
 
+            logger.info("Compra procesada exitosamente para cliente RUT: " + cliente.getRut() + ", Total: " + total);
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            logger.error("Error al procesar la compra: " + e.getMessage());
             return ResponseEntity.status(400).body("Error al procesar la compra: " + e.getMessage());
         }
     }
