@@ -19,7 +19,7 @@ import com.example.demo.interfaces.IClienteService;
 
 @RestController
 @RequestMapping("/api/v1/entities/clientes")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8080"})
+@CrossOrigin(origins = "*")
 public class ClienteController {
     @Autowired
     private IClienteService clienteService;

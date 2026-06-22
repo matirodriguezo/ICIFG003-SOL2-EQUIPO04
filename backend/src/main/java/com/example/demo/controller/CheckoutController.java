@@ -30,7 +30,7 @@ import com.example.demo.repository.ProductoRepository;
 
 @RestController
 @RequestMapping("/api/v1/checkout")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:8080" })
+@CrossOrigin(origins = "*")
 public class CheckoutController {
 
     @Autowired

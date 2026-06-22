@@ -43,7 +43,7 @@ export interface CheckoutResponse {
 
 @Injectable({ providedIn: 'root' })
 export class CheckoutService {
-  private apiUrl = 'http://localhost:8080/api/v1/checkout';
+  private apiUrl = '/api/v1/checkout';
 
   constructor(private http: HttpClient) {}
 

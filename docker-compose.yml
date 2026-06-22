@@ -1,0 +1,87 @@
+# ─── Docker Compose — PetShop ──────────────────────────────────────────────────
+# REQ14: Dockerización local con Docker Desktop
+# REQ15: Servicios inician/detienen mediante Compose
+#
+# Uso:
+#   docker compose up -d          → levantar todos los servicios
+#   docker compose down           → detener y eliminar contenedores
+#   docker compose logs -f        → ver logs en tiempo real
+#   docker compose down -v        → detener y eliminar volúmenes (datos MySQL)
+
+services:
+
+  # ── Base de datos MySQL ────────────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: petshop-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: petshop
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - petshop-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p1234"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ── Backend Spring Boot ────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: petshop-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/petshop?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    ports:
+      - "8080:8080"
+    volumes:
+      # Persistir los logs del backend (REQ10)
+      - backend_logs:/app/logs
+    networks:
+      - petshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/api/v1/entities/productos || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ── Frontend Angular (servido con Nginx) ────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: petshop-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    networks:
+      - petshop-net
+
+# ── Redes ──────────────────────────────────────────────────────────────────────
+networks:
+  petshop-net:
+    driver: bridge
+
+# ── Volúmenes persistentes ─────────────────────────────────────────────────────
+volumes:
+  db_data:
+    driver: local
+  backend_logs:
+    driver: local

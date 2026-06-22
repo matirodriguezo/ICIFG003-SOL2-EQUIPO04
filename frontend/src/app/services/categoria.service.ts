@@ -5,7 +5,7 @@ import { CategoriaProducto } from '../models/backend.models';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriaService {
-  private apiUrl = 'http://localhost:8080/api/v1/entities/categorias';
+  private apiUrl = '/api/v1/entities/categorias';
 
   constructor(private http: HttpClient) {}
 

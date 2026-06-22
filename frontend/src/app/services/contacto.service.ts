@@ -10,7 +10,7 @@ export interface Contacto {
 
 @Injectable({ providedIn: 'root' })
 export class ContactoService {
-  private apiUrl = 'http://localhost:8080/api/v1/entities/contacto';
+  private apiUrl = '/api/v1/entities/contacto';
 
   constructor(private http: HttpClient) {}
 

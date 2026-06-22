@@ -15,7 +15,7 @@ import com.example.demo.interfaces.IContactoService;
 
 @RestController
 @RequestMapping("/api/v1/entities/contacto")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8080"})
+@CrossOrigin(origins = "*")
 public class ContactoController {
     @Autowired
     private IContactoService contactoService;

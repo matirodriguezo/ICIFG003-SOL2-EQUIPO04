@@ -19,7 +19,7 @@ import com.example.demo.interfaces.ICarritoService;
 
 @RestController
 @RequestMapping("/api/v1/entities/carritos")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8080"})
+@CrossOrigin(origins = "*")
 public class CarritoController {
     @Autowired
     private ICarritoService carritoService;
