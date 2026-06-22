@@ -526,6 +526,27 @@
   padding: 24px;
 }
 
+.retry-btn {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  margin: 2px 0 0;
+  font-weight: 400;
+}
+
+.char-count {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  margin: 2px 0 0;
+  text-align: right;
+}
+
 .spinner {
   width: 40px;
   height: 40px;
