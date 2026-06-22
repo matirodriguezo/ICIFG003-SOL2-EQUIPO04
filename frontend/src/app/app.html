@@ -157,6 +157,10 @@
 
       <div *ngIf="error && !loading" class="error-state">
         <p>{{ error }}</p>
+        <button class="btn btn-primary btn-sm retry-btn" (click)="retryLoadData()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Reintentar
+        </button>
       </div>
 
       <div *ngIf="!loading && filteredProducts.length === 0" class="empty-state">
@@ -269,6 +273,7 @@
           <div class="contact-form-card">
             <h3>Envíanos un Mensaje</h3>
             <app-message-banner *ngIf="success" type="success" message="Mensaje enviado con éxito. Te contactaremos pronto." ariaLive="polite"></app-message-banner>
+            <app-message-banner *ngIf="contactError" type="error" [message]="contactError" ariaLive="assertive"></app-message-banner>
             <form (ngSubmit)="handleSubmit()" novalidate>
               <div class="form-field">
                 <label for="name">Nombre completo</label>
@@ -281,13 +286,15 @@
                 <p *ngIf="errors.email" id="email-error" class="error-text">{{ errors.email }}</p>
               </div>
               <div class="form-field">
-                <label for="message">Mensaje</label>
-                <textarea id="message" rows="4" [(ngModel)]="formData.message" name="message" (ngModelChange)="clearError('message')" [class.input-error]="errors.message" placeholder="Escribe tu mensaje aquí..." [attr.aria-invalid]="errors.message ? 'true' : 'false'" [attr.aria-describedby]="errors.message ? 'message-error' : null"></textarea>
+                <label for="message">Mensaje <span class="field-hint">(mín. 10 caracteres)</span></label>
+                <textarea id="message" rows="4" [(ngModel)]="formData.message" name="message" (ngModelChange)="clearError('message')" [class.input-error]="errors.message" placeholder="Escribe tu mensaje aquí..." maxlength="1000" [attr.aria-invalid]="errors.message ? 'true' : 'false'" [attr.aria-describedby]="errors.message ? 'message-error' : null"></textarea>
                 <p *ngIf="errors.message" id="message-error" class="error-text">{{ errors.message }}</p>
+                <p *ngIf="!errors.message && formData.message.length > 0" class="char-count">{{ formData.message.length }}/1000</p>
               </div>
-              <button class="btn btn-primary btn-block" type="submit">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                Enviar Mensaje
+              <button class="btn btn-primary btn-block" type="submit" [disabled]="contactLoading">
+                <svg *ngIf="contactLoading" class="btn-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <svg *ngIf="!contactLoading" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                {{ contactLoading ? 'Enviando...' : 'Enviar Mensaje' }}
               </button>
             </form>
           </div>
@@ -421,35 +428,36 @@
         <div class="form-row">
           <div class="form-field form-field-half">
             <label for="checkout-rut">RUT</label>
-            <input id="checkout-rut" type="text" [(ngModel)]="checkoutForm.rut" (ngModelChange)="onRUTInput($event)" name="checkoutRut" [class.input-error]="checkoutErrors.rut" placeholder="12.345.678-9" maxlength="12" />
+            <input id="checkout-rut" type="text" [(ngModel)]="checkoutForm.rut" (ngModelChange)="onRUTInput($event)" name="checkoutRut" [class.input-error]="checkoutErrors.rut" placeholder="12.345.678-9" maxlength="12" autocomplete="off" />
             <p *ngIf="checkoutErrors.rut" class="error-text">{{ checkoutErrors.rut }}</p>
           </div>
           <div class="form-field form-field-half">
             <label for="checkout-telefono">Teléfono</label>
-            <input id="checkout-telefono" type="text" [(ngModel)]="checkoutForm.telefono" name="checkoutTelefono" (ngModelChange)="clearCheckoutError('telefono')" [class.input-error]="checkoutErrors.telefono" placeholder="+56 9 1234 5678" />
+            <input id="checkout-telefono" type="tel" [(ngModel)]="checkoutForm.telefono" name="checkoutTelefono" (ngModelChange)="onPhoneInput($event)" [class.input-error]="checkoutErrors.telefono" placeholder="+56 9 1234 5678" maxlength="12" />
             <p *ngIf="checkoutErrors.telefono" class="error-text">{{ checkoutErrors.telefono }}</p>
+            <p *ngIf="!checkoutErrors.telefono" class="field-hint">Ej: +56912345678</p>
           </div>
         </div>
         <div class="form-row">
           <div class="form-field form-field-half">
             <label for="checkout-nombre">Nombre</label>
-            <input id="checkout-nombre" type="text" [(ngModel)]="checkoutForm.nombre" name="checkoutNombre" (ngModelChange)="clearCheckoutError('nombre')" [class.input-error]="checkoutErrors.nombre" placeholder="Ej: Juan" />
+            <input id="checkout-nombre" type="text" [(ngModel)]="checkoutForm.nombre" name="checkoutNombre" (ngModelChange)="clearCheckoutError('nombre')" [class.input-error]="checkoutErrors.nombre" placeholder="Ej: Juan" autocomplete="given-name" />
             <p *ngIf="checkoutErrors.nombre" class="error-text">{{ checkoutErrors.nombre }}</p>
           </div>
           <div class="form-field form-field-half">
             <label for="checkout-apellido">Apellido</label>
-            <input id="checkout-apellido" type="text" [(ngModel)]="checkoutForm.apellido" name="checkoutApellido" (ngModelChange)="clearCheckoutError('apellido')" [class.input-error]="checkoutErrors.apellido" placeholder="Ej: García" />
+            <input id="checkout-apellido" type="text" [(ngModel)]="checkoutForm.apellido" name="checkoutApellido" (ngModelChange)="clearCheckoutError('apellido')" [class.input-error]="checkoutErrors.apellido" placeholder="Ej: García" autocomplete="family-name" />
             <p *ngIf="checkoutErrors.apellido" class="error-text">{{ checkoutErrors.apellido }}</p>
           </div>
         </div>
         <div class="form-field">
           <label for="checkout-email">Correo Electrónico</label>
-          <input id="checkout-email" type="email" [(ngModel)]="checkoutForm.correo" name="checkoutEmail" (ngModelChange)="clearCheckoutError('correo')" [class.input-error]="checkoutErrors.correo" placeholder="tu@correo.cl" />
+          <input id="checkout-email" type="email" [(ngModel)]="checkoutForm.correo" name="checkoutEmail" (ngModelChange)="clearCheckoutError('correo')" [class.input-error]="checkoutErrors.correo" placeholder="tu@correo.cl" autocomplete="email" />
           <p *ngIf="checkoutErrors.correo" class="error-text">{{ checkoutErrors.correo }}</p>
         </div>
         <div class="form-field">
           <label for="checkout-direccion">Dirección</label>
-          <input id="checkout-direccion" type="text" [(ngModel)]="checkoutForm.direccion" name="checkoutDireccion" (ngModelChange)="clearCheckoutError('direccion')" [class.input-error]="checkoutErrors.direccion" placeholder="Av. Principal 123, Santiago" />
+            <input id="checkout-direccion" type="text" [(ngModel)]="checkoutForm.direccion" name="checkoutDireccion" (ngModelChange)="clearCheckoutError('direccion')" [class.input-error]="checkoutErrors.direccion" placeholder="Av. Principal 123, Santiago" autocomplete="street-address" />
           <p *ngIf="checkoutErrors.direccion" class="error-text">{{ checkoutErrors.direccion }}</p>
         </div>
         <p *ngIf="checkoutError" class="checkout-error">{{ checkoutError }}</p>

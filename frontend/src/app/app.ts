@@ -64,6 +64,8 @@ export class App implements OnInit {
   formData = { name: '', email: '', message: '' };
   errors: FormErrors = {};
   success = false;
+  contactError = '';
+  contactLoading = false;
 
   checkoutForm = { rut: '', nombre: '', apellido: '', correo: '', telefono: '', direccion: '', codigoPromocional: '' };
   checkoutErrors: FormErrors = {};
@@ -164,6 +166,11 @@ export class App implements OnInit {
 
   addToCart(producto: Producto): void {
     const existing = this.cartItems.find((item) => item.id === producto.id);
+    const currentQty = existing ? existing.quantity : 0;
+    if (currentQty >= producto.stock) {
+      this.toastMessage = `Stock insuficiente de "${producto.nombre}" (disponible: ${producto.stock})`;
+      return;
+    }
     if (existing) {
       this.cartItems = this.cartItems.map((item) =>
         item.id === producto.id
@@ -255,42 +262,64 @@ export class App implements OnInit {
     const errs: any = {};
 
     // Validate RUT
-    const rutValidation = validateAndFormatRUT(this.checkoutForm.rut);
-    if (!rutValidation.isValid) {
-      errs.rut = rutValidation.error || 'RUT inválido';
+    if (!this.checkoutForm.rut.trim()) {
+      errs.rut = 'El RUT es obligatorio';
     } else {
-      // Update form with formatted RUT
-      this.checkoutForm.rut = rutValidation.formatted;
+      const rutValidation = validateAndFormatRUT(this.checkoutForm.rut);
+      if (!rutValidation.isValid) {
+        errs.rut = rutValidation.error || 'RUT inválido';
+      } else {
+        this.checkoutForm.rut = rutValidation.formatted;
+      }
     }
 
     // Validate Name (only letters and spaces)
-    const nameValidation = validateTextOnly(this.checkoutForm.nombre, 'El nombre');
-    if (!nameValidation.isValid) {
-      errs.nombre = nameValidation.error;
+    if (!this.checkoutForm.nombre.trim()) {
+      errs.nombre = 'El nombre es obligatorio';
+    } else if (this.checkoutForm.nombre.trim().length < 2) {
+      errs.nombre = 'El nombre debe tener al menos 2 caracteres';
+    } else {
+      const nameValidation = validateTextOnly(this.checkoutForm.nombre, 'El nombre');
+      if (!nameValidation.isValid) {
+        errs.nombre = nameValidation.error;
+      }
     }
 
     // Validate Last Name (only letters and spaces)
-    const lastNameValidation = validateTextOnly(this.checkoutForm.apellido, 'El apellido');
-    if (!lastNameValidation.isValid) {
-      errs.apellido = lastNameValidation.error;
+    if (!this.checkoutForm.apellido.trim()) {
+      errs.apellido = 'El apellido es obligatorio';
+    } else if (this.checkoutForm.apellido.trim().length < 2) {
+      errs.apellido = 'El apellido debe tener al menos 2 caracteres';
+    } else {
+      const lastNameValidation = validateTextOnly(this.checkoutForm.apellido, 'El apellido');
+      if (!lastNameValidation.isValid) {
+        errs.apellido = lastNameValidation.error;
+      }
     }
 
     // Validate Email
-    if (!this.checkoutForm.correo.trim()) {
-      errs.correo = 'El correo es obligatorio';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.checkoutForm.correo)) {
-      errs.correo = 'Ingresa un correo válido';
+    const correo = this.checkoutForm.correo.trim();
+    if (!correo) {
+      errs.correo = 'El correo electrónico es obligatorio';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+      errs.correo = 'Ingresa un correo válido (ej: nombre@dominio.cl)';
     }
 
     // Validate Phone
-    const phoneValidation = validateChileanPhone(this.checkoutForm.telefono);
-    if (!phoneValidation.isValid) {
-      errs.telefono = phoneValidation.error;
+    if (!this.checkoutForm.telefono.trim()) {
+      errs.telefono = 'El teléfono es obligatorio';
+    } else {
+      const phoneValidation = validateChileanPhone(this.checkoutForm.telefono);
+      if (!phoneValidation.isValid) {
+        errs.telefono = phoneValidation.error;
+      }
     }
 
     // Validate Address
     if (!this.checkoutForm.direccion.trim()) {
       errs.direccion = 'La dirección es obligatoria';
+    } else if (this.checkoutForm.direccion.trim().length < 5) {
+      errs.direccion = 'Ingresa una dirección más detallada';
     }
 
     this.checkoutErrors = errs;
@@ -298,12 +327,23 @@ export class App implements OnInit {
   }
 
   onRUTInput(value: string): void {
-    // Format RUT while typing
     this.checkoutForm.rut = formatRUTWhileTyping(value);
-
-    // Clear error when user is typing
     if (this.checkoutErrors.rut) {
       this.clearCheckoutError('rut');
+    }
+  }
+
+  onPhoneInput(value: string): void {
+    let cleaned = value.replace(/[^\d+]/g, '');
+    if (cleaned.startsWith('+')) {
+      cleaned = '+' + cleaned.replace(/\+/g, '');
+    }
+    if (cleaned.length > 12) {
+      cleaned = cleaned.slice(0, 12);
+    }
+    this.checkoutForm.telefono = cleaned;
+    if (this.checkoutErrors.telefono) {
+      this.clearCheckoutError('telefono');
     }
   }
 
@@ -316,6 +356,10 @@ export class App implements OnInit {
   handleSubmit(): void {
     if (!this.validateForm()) return;
 
+    this.contactLoading = true;
+    this.contactError = '';
+    this.success = false;
+
     this.contactoService.enviarContacto({
       nombre: this.formData.name,
       email: this.formData.email,
@@ -323,6 +367,7 @@ export class App implements OnInit {
     }).subscribe({
       next: () => {
         this.success = true;
+        this.contactLoading = false;
         this.formData = { name: '', email: '', message: '' };
         this.cdr.detectChanges();
         setTimeout(() => {
@@ -331,9 +376,15 @@ export class App implements OnInit {
         }, 5000);
       },
       error: (err) => {
-        alert('Hubo un error al enviar tu mensaje: ' + err.message);
+        this.contactError = err.message || 'Error al enviar el mensaje. Intenta nuevamente.';
+        this.contactLoading = false;
+        this.cdr.detectChanges();
       }
     });
+  }
+
+  retryLoadData(): void {
+    this.loadData();
   }
 
   clearError(field: keyof FormErrors): void {
@@ -344,18 +395,27 @@ export class App implements OnInit {
 
   private validateForm(): boolean {
     const newErrors: FormErrors = {};
-    if (!this.formData.name.trim()) {
+    const name = this.formData.name.trim();
+    if (!name) {
       newErrors.name = 'El nombre es obligatorio';
+    } else if (name.length < 3) {
+      newErrors.name = 'El nombre debe tener al menos 3 caracteres';
+    } else if (name.length > 100) {
+      newErrors.name = 'El nombre no puede exceder los 100 caracteres';
     }
-    if (!this.formData.email.trim()) {
-      newErrors.email = 'El correo es obligatorio';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.formData.email)) {
-      newErrors.email = 'Ingresa un correo válido';
+    const email = this.formData.email.trim();
+    if (!email) {
+      newErrors.email = 'El correo electrónico es obligatorio';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = 'Ingresa un correo válido (ej: nombre@dominio.cl)';
     }
-    if (!this.formData.message.trim()) {
+    const message = this.formData.message.trim();
+    if (!message) {
       newErrors.message = 'El mensaje es obligatorio';
-    } else if (this.formData.message.trim().length < 10) {
+    } else if (message.length < 10) {
       newErrors.message = 'El mensaje debe tener al menos 10 caracteres';
+    } else if (message.length > 1000) {
+      newErrors.message = 'El mensaje no puede exceder los 1000 caracteres';
     }
     this.errors = newErrors;
     return Object.keys(newErrors).length === 0;
