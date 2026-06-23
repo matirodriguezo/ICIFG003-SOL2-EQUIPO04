@@ -48,7 +48,7 @@ Los tres servicios se ejecutan en contenedores Docker orquestados con Docker Com
 |------|-----------|
 | **DEV** | Desarrollo activo. Se trabaja directamente aquí, se hacen cambios, pruebas y commits. Puede tener código en progreso. |
 | **QA** | Código estable y testeado. Se mergea desde DEV cuando la funcionalidad está completa y probada. Se ejecuta con Docker Compose para validación. |
-| **main** | Versión de entrega final. |
+| **main** | Versión de entrega final sol anterior. |
 
 Flujo de trabajo recomendado:
 ```bash
