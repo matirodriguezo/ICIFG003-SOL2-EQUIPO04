@@ -1546,3 +1546,29 @@ Consider defining a bean of type 'com.example.demo.interfaces.IContactoService' 
 2026-06-07 17:59:47.228  INFO 19788 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-06-07 17:59:47.229  INFO 19788 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2026-06-07 17:59:47.232  INFO 19788 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2026-06-07 21:24:05.084  INFO 9552 --- [main] com.example.demo.BackendApplication      : Starting BackendApplication using Java 17.0.11 on LAPTOP-7P8B0PC4 with PID 9552 (C:\Users\mati1\Desktop\ICIFG003-SOL2-EQUIPO04\backend\target\classes started by mati1 in C:\Users\mati1\Desktop\ICIFG003-SOL2-EQUIPO04\backend)
+2026-06-07 21:24:05.088  INFO 9552 --- [main] com.example.demo.BackendApplication      : No active profile set, falling back to default profiles: default
+2026-06-07 21:24:05.960  INFO 9552 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-07 21:24:06.062  INFO 9552 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 90 ms. Found 6 JPA repository interfaces.
+2026-06-07 21:24:06.747  INFO 9552 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2026-06-07 21:24:06.764  INFO 9552 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-07 21:24:06.764  INFO 9552 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2026-06-07 21:24:06.878  INFO 9552 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-07 21:24:06.879  INFO 9552 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1729 ms
+2026-06-07 21:24:07.099  INFO 9552 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-07 21:24:07.182  INFO 9552 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.33
+2026-06-07 21:24:07.367  INFO 9552 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2026-06-07 21:24:07.512  INFO 9552 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-07 21:24:07.839  INFO 9552 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-07 21:24:07.869  INFO 9552 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2026-06-07 21:24:09.395  INFO 9552 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-06-07 21:24:09.407  INFO 9552 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-07 21:24:09.889  WARN 9552 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-07 21:24:10.312  INFO 9552 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2026-06-07 21:24:10.323  INFO 9552 --- [main] com.example.demo.BackendApplication      : Started BackendApplication in 5.842 seconds (JVM running for 6.508)
+2026-06-07 21:28:15.230  INFO 9552 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-07 21:28:15.273  INFO 9552 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-07 21:28:15.320  INFO 9552 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 41 ms
+2026-06-07 21:46:38.857  INFO 9552 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-07 21:46:38.924  INFO 9552 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-07 21:46:38.961  INFO 9552 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
